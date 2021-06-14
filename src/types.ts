@@ -13,3 +13,13 @@ export interface NewUser extends BaseUser {
 }
 
 export type LoginUser = Omit<NewUser, 'name'>;
+
+export interface Note {
+  id: string;
+  content: string;
+  important: boolean;
+  date: string;
+  user: User;
+}
+
+export type NewNote = Omit<Note, 'id' | 'date' | 'user'>;
