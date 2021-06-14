@@ -7,16 +7,14 @@ import ApplicationBar from './components/ApplicationBar';
 
 const theme = createMuiTheme({}, zhCN);
 
-const App = () => {
-  return (
-    <ThemeProvider theme={theme}>
-      <ApplicationBar />
+const App = () => (
+  <ThemeProvider theme={theme}>
+    <ApplicationBar />
 
-      <Container component='main'>
-        Hello world!
-      </Container>
-    </ThemeProvider>
-  );
-};
+    <Container component="main">
+      Hello world!
+    </Container>
+  </ThemeProvider>
+);
 
 export default App;

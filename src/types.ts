@@ -12,4 +12,4 @@ export interface NewUser extends BaseUser {
   password: string;
 }
 
-export type LoginUser = Omit<NewUser, 'name'>
+export type LoginUser = Omit<NewUser, 'name'>;
