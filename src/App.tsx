@@ -12,6 +12,7 @@ import utils from './utils';
 
 import ApplicationBar from './components/ApplicationBar';
 import Login from './components/Login';
+import Notes from './components/Notes';
 
 type DialogStatus = { login: boolean };
 const theme = createMuiTheme({}, zhCN);
@@ -21,7 +22,7 @@ const useStyles = makeStyles((t: Theme) => createStyles(
 
 const App = () => {
   const [user, setUser] = useState<User | null>(null);
-  const [notes, setNotes] = useState<Note[]>();
+  const [notes, setNotes] = useState<Note[]>([]);
   const [dialogStatus, setDialogStatus] = useState<DialogStatus>({ login: false });
   const classes = useStyles();
 
@@ -70,7 +71,7 @@ const App = () => {
 
       <div className={classes.appBarSpacer} />
       <Container component="main">
-        Hello world!
+        <Notes notes={notes} setNotes={setNotes} />
       </Container>
     </ThemeProvider>
   );
