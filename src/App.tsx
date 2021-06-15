@@ -9,6 +9,7 @@ import noteService from './services/note';
 import utils from './utils';
 
 import ApplicationBar from './components/ApplicationBar';
+import Login from './components/Login';
 
 type DialogStatus = { login: boolean };
 const theme = createMuiTheme({}, zhCN);
@@ -51,6 +52,12 @@ const App = () => {
         handleLogout={handleLogout}
         displayName={user === null ? null : user.name}
         showLogin={() => setDialogStatus({ ...dialogStatus, login: true })}
+      />
+
+      <Login
+        display={dialogStatus.login}
+        hideDialog={() => setDialogStatus({ ...dialogStatus, login: false })}
+        login={handleLogin}
       />
 
       <Container component="main">
