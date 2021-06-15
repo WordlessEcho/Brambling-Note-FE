@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
-import { Container, ThemeProvider, createMuiTheme } from '@material-ui/core';
+import {
+  Container, ThemeProvider, Theme, createStyles, makeStyles, createMuiTheme,
+} from '@material-ui/core';
 import { zhCN } from '@material-ui/core/locale';
 
 import { LoginUser, Note, User } from './types';
@@ -13,11 +15,15 @@ import Login from './components/Login';
 
 type DialogStatus = { login: boolean };
 const theme = createMuiTheme({}, zhCN);
+const useStyles = makeStyles((t: Theme) => createStyles(
+  { appBarSpacer: t.mixins.toolbar },
+));
 
 const App = () => {
   const [user, setUser] = useState<User | null>(null);
   const [notes, setNotes] = useState<Note[]>();
   const [dialogStatus, setDialogStatus] = useState<DialogStatus>({ login: false });
+  const classes = useStyles();
 
   const handleLogin = (loginUser: LoginUser) => (
     loginService.login(loginUser)
@@ -62,6 +68,7 @@ const App = () => {
         login={handleLogin}
       />
 
+      <div className={classes.appBarSpacer} />
       <Container component="main">
         Hello world!
       </Container>
