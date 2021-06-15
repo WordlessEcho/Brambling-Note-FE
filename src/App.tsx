@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Container, ThemeProvider, createMuiTheme } from '@material-ui/core';
 import { zhCN } from '@material-ui/core/locale';
 
-import { LoginUser, User } from './types';
+import { LoginUser, Note, User } from './types';
 import loginService from './services/login';
 import noteService from './services/note';
 import utils from './utils';
@@ -16,6 +16,7 @@ const theme = createMuiTheme({}, zhCN);
 
 const App = () => {
   const [user, setUser] = useState<User | null>(null);
+  const [notes, setNotes] = useState<Note[]>();
   const [dialogStatus, setDialogStatus] = useState<DialogStatus>({ login: false });
 
   const handleLogin = (loginUser: LoginUser) => (
@@ -33,7 +34,7 @@ const App = () => {
     if (user !== null) {
       localStorage.setItem('user', JSON.stringify(user));
       noteService.setToken(user.token);
-      // TODO: get all notes
+      noteService.getAll().then((n) => setNotes(n));
     } else {
       const cacheUser = localStorage.getItem('user');
 
@@ -41,6 +42,7 @@ const App = () => {
         const parsedUser = utils.toUser(JSON.parse(cacheUser));
         setUser(parsedUser);
         noteService.setToken(parsedUser.token);
+        noteService.getAll().then((n) => setNotes(n));
       }
       // TODO: display a user guide
     }
