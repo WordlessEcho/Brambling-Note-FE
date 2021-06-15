@@ -9,6 +9,10 @@ const setToken = (newToken: string) => {
   token = `bearer ${newToken}`;
 };
 
+const clearToken = () => {
+  token = null;
+};
+
 const getConfig = (): Config => {
   if (token === null) {
     throw new TypeError('Token should not be null');
@@ -22,4 +26,4 @@ const getAll = async () => {
   return response.data;
 };
 
-export default { setToken, getAll };
+export default { setToken, clearToken, getAll };
