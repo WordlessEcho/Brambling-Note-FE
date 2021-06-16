@@ -18,10 +18,6 @@ const NoteCell = ({ note, updateNote }: Props) => {
 
   const [display, setDisplay] = useState(false);
 
-  const handleExpander = () => {
-    setDisplay(!display);
-  };
-
   return (
     <>
       <TableRow>
@@ -48,7 +44,7 @@ const NoteCell = ({ note, updateNote }: Props) => {
             aria-label="展开此行"
             aria-checked={display}
             size="small"
-            onClick={handleExpander}
+            onClick={() => setDisplay(!display)}
           >
             {display ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
           </IconButton>
