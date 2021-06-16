@@ -26,12 +26,12 @@ const getAll = async () => {
   return response.data;
 };
 
-const changeNote = async (id: string, newNote: NewNote) => {
+const update = async (id: string, newNote: NewNote) => {
   const response = await axios.put<Note>(`${baseUrl}/${id}`, newNote, getConfig());
   return response.data;
 };
 
-const removeNote = (id: string) => (
+const remove = (id: string) => (
   axios.delete<void>(`${baseUrl}/${id}`, getConfig())
 );
 
@@ -39,6 +39,6 @@ export default {
   setToken,
   clearToken,
   getAll,
-  changeNote,
-  removeNote,
+  update,
+  remove,
 };
