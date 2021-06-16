@@ -80,7 +80,11 @@ const App = () => {
 
       <div className={classes.appBarSpacer} />
       <Container component="main">
-        <Notes notes={notes} setNotes={setNotes} />
+        <Notes
+          notes={notes}
+          setNotes={setNotes}
+          updateNote={handleNoteUpdate}
+        />
       </Container>
     </ThemeProvider>
   );

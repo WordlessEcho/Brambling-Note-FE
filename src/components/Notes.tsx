@@ -5,9 +5,14 @@ import {
   TableSortLabel, TableBody,
   SortDirection,
 } from '@material-ui/core';
-import { Note } from '../types';
+import { NewNote, Note } from '../types';
+import NoteCell from './NoteCell';
 
-type Props = { notes: Note[], setNotes: (arg: Note[]) => void };
+type Props = {
+  notes: Note[],
+  setNotes: (arg: Note[]) => void,
+  updateNote: (id: string, newNote: NewNote) => void,
+};
 type HeadCell = { id: string, name: string, direction: SortDirection | null };
 
 const defaultHeads: HeadCell[] = [
@@ -15,7 +20,7 @@ const defaultHeads: HeadCell[] = [
   { id: 'important', name: '重要', direction: null },
 ];
 
-const Notes = ({ notes, setNotes }: Props) => {
+const Notes = ({ notes, setNotes, updateNote }: Props) => {
   const [headsCanBeSorted, setHeadsCanBeSorted] = useState<HeadCell[]>(defaultHeads);
 
   const sortNotes = (id: string) => () => {
@@ -54,8 +59,9 @@ const Notes = ({ notes, setNotes }: Props) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          { /* TODO */ }
-          {notes.map((note) => console.log(note))}
+          {notes.map((note) => (
+            <NoteCell key={note.id} note={note} updateNote={updateNote} />
+          ))}
         </TableBody>
       </Table>
     </TableContainer>
