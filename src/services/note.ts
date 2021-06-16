@@ -31,9 +31,14 @@ const changeNote = async (id: string, newNote: NewNote) => {
   return response.data;
 };
 
+const removeNote = (id: string) => (
+  axios.delete<void>(`${baseUrl}/${id}`, getConfig())
+);
+
 export default {
   setToken,
   clearToken,
   getAll,
   changeNote,
+  removeNote,
 };
