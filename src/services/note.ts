@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Note } from '../types';
+import { NewNote, Note } from '../types';
 
 const baseUrl = '/api/notes';
 let token: string | null = null;
@@ -26,4 +26,14 @@ const getAll = async () => {
   return response.data;
 };
 
-export default { setToken, clearToken, getAll };
+const changeNote = async (id: string, newNote: NewNote) => {
+  const response = await axios.put<Note>(`${baseUrl}/${id}`, newNote, getConfig());
+  return response.data;
+};
+
+export default {
+  setToken,
+  clearToken,
+  getAll,
+  changeNote,
+};
