@@ -23,10 +23,11 @@ const useStyles = makeStyles((t: Theme) => createStyles(
 ));
 
 const App = () => {
+  const classes = useStyles();
+
   const [user, setUser] = useState<User | null>(null);
   const [notes, setNotes] = useState<Note[]>([]);
   const [dialogStatus, setDialogStatus] = useState<DialogStatus>({ login: false });
-  const classes = useStyles();
 
   const handleLogin = (loginUser: LoginUser) => (
     loginService.login(loginUser)

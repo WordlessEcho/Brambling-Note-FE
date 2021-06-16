@@ -28,6 +28,7 @@ const NoteDetails = ({
 }: Props) => {
   const { id, content } = note;
   const classes = useStyles();
+
   const [newContent, setNewContent] = useState(content);
 
   const onSubmit = (e: React.SyntheticEvent) => {
