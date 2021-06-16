@@ -19,17 +19,17 @@ const Login = ({ display, hideDialog, login }: Props) => {
     hideDialog();
   };
 
-  const onSubmit = (event: React.SyntheticEvent) => {
-    event.preventDefault();
+  const onSubmit = (e: React.SyntheticEvent) => {
+    e.preventDefault();
     login({ username, password })
       .then(() => handleExit())
-      .catch((e) => {
-        if (e.response && e.response.status === 401) {
+      .catch((error) => {
+        if (error.response && error.response.status === 401) {
           // TODO: show a dialog to user
           console.warn('User input a wrong username or password');
         } else {
           // TODO: ask user to report a bug
-          console.error(e.message);
+          console.error(error.message);
         }
       });
   };
