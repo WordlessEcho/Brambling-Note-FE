@@ -39,12 +39,12 @@ const App = () => {
     setUser(null);
   };
 
-  const handleNoteUpdate = (id: string, newNote: NewNote) => {
+  const handleNoteUpdate = (id: string, newNote: NewNote) => (
     noteService.update(id, newNote)
       .then((returnedNote) => setNotes(
         notes.map((note) => (note.id === id ? returnedNote : note)),
-      ));
-  };
+      ))
+  );
 
   useEffect(() => {
     if (user !== null) {

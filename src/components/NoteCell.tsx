@@ -8,7 +8,7 @@ import { NewNote, Note } from '../types';
 
 type Props = {
   note: Note,
-  updateNote: (id: string, newNote: NewNote) => void,
+  updateNote: (id: string, newNote: NewNote) => Promise<void>,
 };
 
 const NoteCell = ({ note, updateNote }: Props) => {

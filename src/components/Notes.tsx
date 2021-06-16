@@ -11,7 +11,7 @@ import NoteCell from './NoteCell';
 type Props = {
   notes: Note[],
   setNotes: (arg: Note[]) => void,
-  updateNote: (id: string, newNote: NewNote) => void,
+  updateNote: (id: string, newNote: NewNote) => Promise<void>,
 };
 type HeadCell = { id: string, name: string, direction: SortDirection | null };
 
