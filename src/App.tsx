@@ -40,7 +40,7 @@ const App = () => {
   };
 
   const handleNoteUpdate = (id: string, newNote: NewNote) => {
-    noteService.changeNote(id, newNote)
+    noteService.update(id, newNote)
       .then((returnedNote) => setNotes(
         notes.map((note) => (note.id === id ? returnedNote : note)),
       ));
