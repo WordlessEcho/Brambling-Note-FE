@@ -5,7 +5,9 @@ import {
 } from '@material-ui/core';
 import { zhCN } from '@material-ui/core/locale';
 
-import { LoginUser, Note, User } from './types';
+import {
+  LoginUser, NewNote, Note, User,
+} from './types';
 import loginService from './services/login';
 import noteService from './services/note';
 import utils from './utils';
@@ -35,6 +37,13 @@ const App = () => {
     localStorage.removeItem('user');
     noteService.clearToken();
     setUser(null);
+  };
+
+  const handleNoteUpdate = (id: string, newNote: NewNote) => {
+    noteService.changeNote(id, newNote)
+      .then((returnedNote) => setNotes(
+        notes.map((note) => (note.id === id ? returnedNote : note)),
+      ));
   };
 
   useEffect(() => {
