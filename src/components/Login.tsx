@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import {
   useTheme, useMediaQuery, Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button,
 } from '@material-ui/core';
@@ -24,13 +25,15 @@ const Login = ({ display, hideDialog, login }: Props) => {
     login({ username, password })
       .then(() => handleExit())
       .catch((error) => {
-        if (error.response && error.response.status === 401) {
-          // TODO: show a dialog to user
-          console.warn('User input a wrong username or password');
-        } else {
-          // TODO: ask user to report a bug
-          console.error(error.message);
+        if (axios.isAxiosError(error)) {
+          if (error.response && error.response.status === 401) {
+            // TODO: show a dialog to user
+            return console.warn('User input a wrong username or password');
+          }
         }
+
+        // TODO: ask user to report a bug
+        return console.error(error.message);
       });
   };
 
