@@ -12,6 +12,7 @@ type Props = {
   notes: Note[],
   setNotes: (arg: Note[]) => void,
   updateNote: (id: string, newNote: NewNote) => Promise<void>,
+  deleteNote: (id: string) => Promise<void>,
 };
 type HeadCell = { id: string, name: string, direction: SortDirection | null };
 
@@ -20,7 +21,9 @@ const defaultHeads: HeadCell[] = [
   { id: 'important', name: '重要', direction: null },
 ];
 
-const Notes = ({ notes, setNotes, updateNote }: Props) => {
+const Notes = ({
+  notes, setNotes, updateNote, deleteNote,
+}: Props) => {
   const [headsCanBeSorted, setHeadsCanBeSorted] = useState<HeadCell[]>(defaultHeads);
 
   const sortNotes = (id: string) => () => {
@@ -60,7 +63,12 @@ const Notes = ({ notes, setNotes, updateNote }: Props) => {
         </TableHead>
         <TableBody>
           {notes.map((note) => (
-            <NoteCell key={note.id} note={note} updateNote={updateNote} />
+            <NoteCell
+              key={note.id}
+              note={note}
+              updateNote={updateNote}
+              deleteNote={deleteNote}
+            />
           ))}
         </TableBody>
       </Table>

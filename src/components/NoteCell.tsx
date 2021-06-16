@@ -1,26 +1,40 @@
 import React, { useState } from 'react';
-import { IconButton, TableCell, TableRow } from '@material-ui/core';
+import {
+  IconButton, TableCell, TableRow, makeStyles,
+} from '@material-ui/core';
 import Flag from '@material-ui/icons/Flag';
 import KeyboardArrowUp from '@material-ui/icons/KeyboardArrowUp';
 import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown';
 
 import { NewNote, Note } from '../types';
+import NoteDetails from './NoteDetails';
 
 type Props = {
   note: Note,
   updateNote: (id: string, newNote: NewNote) => Promise<void>,
+  deleteNote: (id: string) => Promise<void>,
 };
 
-const NoteCell = ({ note, updateNote }: Props) => {
+const useStyles = makeStyles(() => ({
+  // See: https://material-ui.com/components/tables/#collapsible-table
+  hideBoraderLine: {
+    '& > *': {
+      borderBottom: 'unset',
+    },
+  },
+}));
+
+const NoteCell = ({ note, updateNote, deleteNote }: Props) => {
   const {
     id, content, important, date,
   } = note;
+  const classes = useStyles();
 
   const [display, setDisplay] = useState(false);
 
   return (
     <>
-      <TableRow>
+      <TableRow className={classes.hideBoraderLine}>
         <TableCell>
           {content}
         </TableCell>
@@ -51,7 +65,13 @@ const NoteCell = ({ note, updateNote }: Props) => {
         </TableCell>
       </TableRow>
       <TableRow>
-        { /* TODO */ }
+        <NoteDetails
+          display={display}
+          hideDetails={() => setDisplay(false)}
+          note={note}
+          updateNote={updateNote}
+          deleteNote={deleteNote}
+        />
       </TableRow>
     </>
   );

@@ -46,6 +46,11 @@ const App = () => {
       ))
   );
 
+  const handleNoteDelete = (id: string) => (
+    noteService.remove(id)
+      .then(() => setNotes(notes.filter((n) => n.id !== id)))
+  );
+
   useEffect(() => {
     if (user !== null) {
       localStorage.setItem('user', JSON.stringify(user));
@@ -84,6 +89,7 @@ const App = () => {
           notes={notes}
           setNotes={setNotes}
           updateNote={handleNoteUpdate}
+          deleteNote={handleNoteDelete}
         />
       </Container>
     </ThemeProvider>
