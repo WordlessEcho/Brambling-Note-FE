@@ -1,18 +1,23 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import {
   TableContainer, Paper, Table,
   TableHead, TableRow, TableCell,
   TableSortLabel, TableBody,
   SortDirection,
 } from '@material-ui/core';
-import { NewNote, Note } from '../types';
+
+import { ErrorMessage, NewNote, Note } from '../types';
+
 import NoteCell from './NoteCell';
+import { toErrorMessage } from '../utils';
 
 type Props = {
   notes: Note[],
   setNotes: (arg: Note[]) => void,
   updateNote: (id: string, newNote: NewNote) => Promise<void>,
   deleteNote: (id: string) => Promise<void>,
+  setErrorMessage: (message: ErrorMessage) => void,
 };
 type HeadCell = { id: string, name: string, direction: SortDirection | null };
 
@@ -22,9 +27,19 @@ const defaultHeads: HeadCell[] = [
 ];
 
 const Notes = ({
-  notes, setNotes, updateNote, deleteNote,
+  notes, setNotes, updateNote, deleteNote, setErrorMessage,
 }: Props) => {
   const [headsCanBeSorted, setHeadsCanBeSorted] = useState<HeadCell[]>(defaultHeads);
+
+  const handleNoteError = (error: Error, operation: string) => {
+    if (axios.isAxiosError(error)) {
+      if (error.response && error.response.status === 404) {
+        return setErrorMessage({ title: `您要${operation}的便签已不存在`, content: null });
+      }
+    }
+
+    return setErrorMessage(toErrorMessage(error));
+  };
 
   const sortNotes = (id: string) => () => {
     setHeadsCanBeSorted(headsCanBeSorted.map((head) => (
@@ -68,6 +83,7 @@ const Notes = ({
               note={note}
               updateNote={updateNote}
               deleteNote={deleteNote}
+              handleNoteError={handleNoteError}
             />
           ))}
         </TableBody>

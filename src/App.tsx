@@ -102,6 +102,7 @@ const App = () => {
           setNotes={setNotes}
           updateNote={handleNoteUpdate}
           deleteNote={handleNoteDelete}
+          setErrorMessage={setErrorMessage}
         />
       </Container>
     </ThemeProvider>

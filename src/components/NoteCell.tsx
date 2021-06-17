@@ -7,12 +7,14 @@ import KeyboardArrowUp from '@material-ui/icons/KeyboardArrowUp';
 import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown';
 
 import { NewNote, Note } from '../types';
+
 import NoteDetails from './NoteDetails';
 
 type Props = {
   note: Note,
   updateNote: (id: string, newNote: NewNote) => Promise<void>,
   deleteNote: (id: string) => Promise<void>,
+  handleNoteError: (error: Error, operation: string) => void,
 };
 
 const useStyles = makeStyles(() => ({
@@ -24,13 +26,20 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const NoteCell = ({ note, updateNote, deleteNote }: Props) => {
+const NoteCell = ({
+  note, updateNote, deleteNote, handleNoteError,
+}: Props) => {
   const {
     id, content, important, date,
   } = note;
   const classes = useStyles();
 
   const [display, setDisplay] = useState(false);
+
+  const changeImportant = () => {
+    updateNote(id, { ...note, important: !important })
+      .catch((error) => handleNoteError(error, '编辑'));
+  };
 
   return (
     <>
@@ -46,7 +55,7 @@ const NoteCell = ({ note, updateNote, deleteNote }: Props) => {
             size="small"
             aria-label="重要标记"
             aria-checked={important}
-            onClick={() => updateNote(id, { ...note, important: !important })}
+            onClick={changeImportant}
           >
             {important
               ? <Flag color="secondary" />
