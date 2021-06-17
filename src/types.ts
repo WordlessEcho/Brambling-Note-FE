@@ -23,3 +23,5 @@ export interface Note {
 }
 
 export type NewNote = Omit<Note, 'id' | 'date' | 'user'>;
+
+export type ErrorMessage = { title: string | null, content: string | null };

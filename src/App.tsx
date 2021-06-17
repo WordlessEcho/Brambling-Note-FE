@@ -6,7 +6,7 @@ import {
 import { zhCN } from '@material-ui/core/locale';
 
 import {
-  LoginUser, NewNote, Note, User,
+  ErrorMessage, LoginUser, NewNote, Note, User,
 } from './types';
 import loginService from './services/login';
 import noteService from './services/note';
@@ -14,9 +14,11 @@ import utils from './utils';
 
 import ApplicationBar from './components/ApplicationBar';
 import Login from './components/Login';
+import ErrorDialog from './components/ErrorDialog';
 import Notes from './components/Notes';
 
-type DialogStatus = { login: boolean };
+type DialogStatus = { login: boolean, error: boolean };
+
 const theme = createMuiTheme({}, zhCN);
 const useStyles = makeStyles((t: Theme) => createStyles(
   { appBarSpacer: t.mixins.toolbar },
@@ -27,7 +29,11 @@ const App = () => {
 
   const [user, setUser] = useState<User | null>(null);
   const [notes, setNotes] = useState<Note[]>([]);
-  const [dialogStatus, setDialogStatus] = useState<DialogStatus>({ login: false });
+  const [dialogStatus, setDialogStatus] = useState<DialogStatus>({
+    login: false,
+    error: false,
+  });
+  const [errorMessage, setErrorMessage] = useState<ErrorMessage | null>(null);
 
   const handleLogin = (loginUser: LoginUser) => (
     loginService.login(loginUser)
@@ -82,6 +88,11 @@ const App = () => {
         display={dialogStatus.login}
         hideDialog={() => setDialogStatus({ ...dialogStatus, login: false })}
         login={handleLogin}
+      />
+
+      <ErrorDialog
+        message={errorMessage}
+        hideDialog={() => setErrorMessage(null)}
       />
 
       <div className={classes.appBarSpacer} />
