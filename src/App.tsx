@@ -10,7 +10,7 @@ import {
 } from './types';
 import loginService from './services/login';
 import noteService from './services/note';
-import utils from './utils';
+import { toUser } from './utils';
 
 import ApplicationBar from './components/ApplicationBar';
 import Login from './components/Login';
@@ -67,7 +67,7 @@ const App = () => {
       const cacheUser = localStorage.getItem('user');
 
       if (cacheUser !== null) {
-        const parsedUser = utils.toUser(JSON.parse(cacheUser));
+        const parsedUser = toUser(JSON.parse(cacheUser));
         setUser(parsedUser);
         noteService.setToken(parsedUser.token);
         noteService.getAll().then((n) => setNotes(n));

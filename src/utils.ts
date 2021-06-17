@@ -12,7 +12,7 @@ const parseString = (name: string, str: unknown): string => {
 
 type Fields = { id: unknown, username: unknown, name: unknown, token: unknown };
 
-const toUser = ({
+export const toUser = ({
   id, username, name, token,
 }: Fields): User => {
   const user: User = {
@@ -36,5 +36,3 @@ export const toErrorMessage = (error: Error): ErrorMessage => (
     `,
   }
 );
-
-export default { toUser };
