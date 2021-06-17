@@ -1,4 +1,4 @@
-import { User } from './types';
+import { ErrorMessage, User } from './types';
 
 const isString = (text: unknown): text is string => typeof text === 'string' || text instanceof String;
 
@@ -24,5 +24,17 @@ const toUser = ({
 
   return user;
 };
+
+export const toErrorMessage = (error: Error): ErrorMessage => (
+  {
+    title: null,
+    content: `error.name:
+    ${error.name}
+
+    error.message:
+    ${error.message}
+    `,
+  }
+);
 
 export default { toUser };
