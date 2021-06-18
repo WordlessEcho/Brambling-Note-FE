@@ -34,7 +34,7 @@ const NoteCell = ({
   } = note;
   const classes = useStyles();
 
-  const [display, setDisplay] = useState(false);
+  const [showDetails, setShowDetails] = useState(false);
 
   const changeImportant = () => {
     updateNote(id, { ...note, important: !important })
@@ -65,18 +65,18 @@ const NoteCell = ({
         <TableCell align="right">
           <IconButton
             aria-label="展开此行"
-            aria-checked={display}
+            aria-checked={showDetails}
             size="small"
-            onClick={() => setDisplay(!display)}
+            onClick={() => setShowDetails(!showDetails)}
           >
-            {display ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
+            {showDetails ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
           </IconButton>
         </TableCell>
       </TableRow>
       <TableRow>
         <NoteDetails
-          display={display}
-          hideDetails={() => setDisplay(false)}
+          display={showDetails}
+          hideDetails={() => setShowDetails(false)}
           note={note}
           updateNote={updateNote}
           deleteNote={deleteNote}
