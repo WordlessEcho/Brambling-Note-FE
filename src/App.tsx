@@ -17,8 +17,6 @@ import Login from './components/Login';
 import ErrorDialog from './components/ErrorDialog';
 import Notes from './components/Notes';
 
-type DialogStatus = { login: boolean, error: boolean };
-
 const theme = createMuiTheme({}, zhCN);
 const useStyles = makeStyles((t: Theme) => createStyles(
   { appBarSpacer: t.mixins.toolbar },
@@ -29,10 +27,7 @@ const App = () => {
 
   const [user, setUser] = useState<User | null>(null);
   const [notes, setNotes] = useState<Note[]>([]);
-  const [dialogStatus, setDialogStatus] = useState<DialogStatus>({
-    login: false,
-    error: false,
-  });
+  const [showLogin, setShowLogin] = useState(false);
   const [errorMessage, setErrorMessage] = useState<ErrorMessage | null>(null);
 
   const handleLogin = (loginUser: LoginUser) => (
@@ -81,12 +76,12 @@ const App = () => {
       <ApplicationBar
         handleLogout={handleLogout}
         displayName={user === null ? null : user.name}
-        showLogin={() => setDialogStatus({ ...dialogStatus, login: true })}
+        showLogin={() => setShowLogin(true)}
       />
 
       <Login
-        display={dialogStatus.login}
-        hideDialog={() => setDialogStatus({ ...dialogStatus, login: false })}
+        display={showLogin}
+        hideDialog={() => setShowLogin(false)}
         login={handleLogin}
       />
 
