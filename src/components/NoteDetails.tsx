@@ -34,10 +34,13 @@ const NoteDetails = ({
   const onSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
 
-    // TODO: check they were same or not
-    updateNote(id, { ...note, content: newContent })
-      .then(() => hideDetails())
-      .catch((error: Error) => handleNoteError(error, '修改'));
+    if (newContent === content) {
+      hideDetails();
+    } else {
+      updateNote(id, { ...note, content: newContent })
+        .then(() => hideDetails())
+        .catch((error: Error) => handleNoteError(error, '修改'));
+    }
   };
 
   const handleNoteDelete = () => {
