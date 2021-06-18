@@ -37,17 +37,13 @@ const NoteDetails = ({
     // TODO: check they were same or not
     updateNote(id, { ...note, content: newContent })
       .then(() => hideDetails())
-      .catch((error: Error) => {
-        handleNoteError(error, '修改');
-      });
+      .catch((error: Error) => handleNoteError(error, '修改'));
   };
 
   const handleNoteDelete = () => {
     deleteNote(id)
       .then(() => hideDetails())
-      .catch((error) => {
-        handleNoteError(error, '删除');
-      });
+      .catch((error) => handleNoteError(error, '删除'));
   };
 
   useEffect(() => {
