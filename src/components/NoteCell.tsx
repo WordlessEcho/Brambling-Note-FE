@@ -80,6 +80,7 @@ const NoteCell = ({
           note={note}
           updateNote={updateNote}
           deleteNote={deleteNote}
+          handleNoteError={handleNoteError}
         />
       </TableRow>
     </>

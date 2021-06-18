@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import {
   Button, Grid, TextField, Box, Collapse, TableCell, createStyles, Theme, makeStyles,
 } from '@material-ui/core';
@@ -15,6 +14,7 @@ type Props = {
   note: Note,
   updateNote: (id: string, newNote: NewNote) => Promise<void>,
   deleteNote: (id: string) => Promise<void>,
+  handleNoteError: (error: Error, operation: string) => void,
 };
 
 const useStyles = makeStyles(({ spacing }: Theme) => createStyles({
@@ -24,7 +24,7 @@ const useStyles = makeStyles(({ spacing }: Theme) => createStyles({
 }));
 
 const NoteDetails = ({
-  display, hideDetails, note, updateNote, deleteNote,
+  display, hideDetails, note, updateNote, deleteNote, handleNoteError,
 }: Props) => {
   const { id, content } = note;
   const classes = useStyles();
@@ -35,38 +35,18 @@ const NoteDetails = ({
     e.preventDefault();
 
     // TODO: check they were same or not
-    // TODO: catch 404 error
     updateNote(id, { ...note, content: newContent })
       .then(() => hideDetails())
-      .catch((error) => {
-        if (axios.isAxiosError(error)) {
-          if (error.response && error.response.status === 404) {
-            // TODO: show a dialog to user
-            console.warn('note not found.');
-          }
-        }
-
-        // TODO: ask user to report a bug
-        console.error(`Unexpected error: ${error.message}`);
-        console.error(error);
+      .catch((error: Error) => {
+        handleNoteError(error, '修改');
       });
   };
 
   const handleNoteDelete = () => {
-    // TODO: catch 404 error
     deleteNote(id)
       .then(() => hideDetails())
       .catch((error) => {
-        if (axios.isAxiosError(error)) {
-          if (error.response && error.response.status === 404) {
-            // TODO: show a dialog to user
-            console.warn('note not found.');
-          }
-        }
-
-        // TODO: ask user to report a bug
-        console.error(`Unexpected error: ${error.message}`);
-        console.error(error);
+        handleNoteError(error, '删除');
       });
   };
 
