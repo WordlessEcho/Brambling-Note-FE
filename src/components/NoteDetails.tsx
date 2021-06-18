@@ -43,6 +43,17 @@ const NoteDetails = ({
     }
   };
 
+  const share = () => {
+    navigator.share({
+      // TODO: should not hard code app name
+      title: '便签',
+      text: content,
+      // TODO: Heroku will meet router problem
+      // Details: https://stackoverflow.com/questions/41772411/react-routing-works-in-local-machine-but-not-heroku
+      // url: `/${id}`,
+    });
+  };
+
   const handleNoteDelete = () => {
     deleteNote(id)
       .then(() => hideDetails())
@@ -72,14 +83,7 @@ const NoteDetails = ({
             />
             <Grid container direction="row" justify="flex-end" className={classes.buttons}>
               <Button
-                onClick={() => navigator.share({
-                  // TODO: should not hard code app name
-                  title: '便签',
-                  text: content,
-                  // TODO: Heroku will meet router problem
-                  // Details: https://stackoverflow.com/questions/41772411/react-routing-works-in-local-machine-but-not-heroku
-                  // url: `/${id}`,
-                })}
+                onClick={share}
                 endIcon={<Share />}
               >
                 分享
