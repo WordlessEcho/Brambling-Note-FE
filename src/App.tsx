@@ -83,6 +83,7 @@ const App = () => {
         display={showLogin}
         hideDialog={() => setShowLogin(false)}
         login={handleLogin}
+        setErrorMessage={setErrorMessage}
       />
 
       <ErrorDialog

@@ -3,11 +3,19 @@ import axios from 'axios';
 import {
   useTheme, useMediaQuery, Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button,
 } from '@material-ui/core';
-import { LoginUser } from '../types';
+import { ErrorMessage, LoginUser } from '../types';
+import { toErrorMessage } from '../utils';
 
-type Props = { display: boolean, hideDialog: () => void, login: (arg: LoginUser) => Promise<void> };
+type Props = {
+  display: boolean,
+  hideDialog: () => void,
+  login: (arg: LoginUser) => Promise<void>,
+  setErrorMessage: (message: ErrorMessage) => void,
+};
 
-const Login = ({ display, hideDialog, login }: Props) => {
+const Login = ({
+  display, hideDialog, login, setErrorMessage,
+}: Props) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -27,13 +35,12 @@ const Login = ({ display, hideDialog, login }: Props) => {
       .catch((error) => {
         if (axios.isAxiosError(error)) {
           if (error.response && error.response.status === 401) {
-            // TODO: show a dialog to user
-            return console.warn('User input a wrong username or password');
+            return setErrorMessage({ title: '您输入的用户名或密码有误', content: null });
           }
         }
 
-        // TODO: ask user to report a bug
-        return console.error(error.message);
+        const friendlyLog = toErrorMessage(error);
+        return setErrorMessage(friendlyLog);
       });
   };
 
