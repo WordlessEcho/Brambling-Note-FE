@@ -17,6 +17,7 @@ import Login from './components/Login';
 import ErrorDialog from './components/ErrorDialog';
 import Notes from './components/Notes';
 import NewFab from './components/NewFab';
+import NoteForm from './components/NoteForm';
 
 const theme = createMuiTheme({}, zhCN);
 const useStyles = makeStyles((t: Theme) => createStyles(
@@ -42,6 +43,11 @@ const App = () => {
     noteService.clearToken();
     setUser(null);
   };
+
+  const handleNoteCreate = (newNote: NewNote) => (
+    noteService.add(newNote)
+      .then((returnedNote) => setNotes(notes.concat(returnedNote)))
+  );
 
   const handleNoteUpdate = (id: string, newNote: NewNote) => (
     noteService.update(id, newNote)
@@ -92,6 +98,13 @@ const App = () => {
       <ErrorDialog
         message={errorMessage}
         hideDialog={() => setErrorMessage(null)}
+      />
+
+      <NoteForm
+        display={showNoteForm}
+        createNote={handleNoteCreate}
+        hideDialog={() => setShowNoteForm(false)}
+        setErrorMessage={setErrorMessage}
       />
 
       <div className={classes.appBarSpacer} />
