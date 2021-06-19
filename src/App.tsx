@@ -94,13 +94,22 @@ const App = () => {
 
       <div className={classes.appBarSpacer} />
       <Container component="main">
-        <Notes
-          notes={notes}
-          setNotes={setNotes}
-          updateNote={handleNoteUpdate}
-          deleteNote={handleNoteDelete}
-          setErrorMessage={setErrorMessage}
-        />
+        {notes.length === 0
+          ? (
+            <>
+              {/* TODO: display a user guide */}
+              <div>点击右下角的按钮，开始记录您的第一条便签！</div>
+            </>
+          )
+          : (
+            <Notes
+              notes={notes}
+              setNotes={setNotes}
+              updateNote={handleNoteUpdate}
+              deleteNote={handleNoteDelete}
+              setErrorMessage={setErrorMessage}
+            />
+          )}
       </Container>
     </ThemeProvider>
   );
