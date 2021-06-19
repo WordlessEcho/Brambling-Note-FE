@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Button, Typography, Toolbar, AppBar, makeStyles,
+  Button, Typography, Toolbar, AppBar, useScrollTrigger, makeStyles,
 } from '@material-ui/core';
 
 type Props = {
@@ -15,18 +15,25 @@ const useStyles = makeStyles(() => ({
 
 const ApplicationBar = ({ displayName, showLogin, handleLogout }: Props) => {
   const classes = useStyles();
+  const trigger = useScrollTrigger({
+    disableHysteresis: true,
+    threshold: 0,
+  });
 
   return (
-    <AppBar position="static">
-      <Toolbar>
-        <Typography variant="h6" className={classes.title}>
-          便签
-        </Typography>
-        {displayName === null
-          ? <Button color="inherit" onClick={showLogin}>登入</Button>
-          : <Button color="inherit" onClick={handleLogout}>{displayName}</Button>}
-      </Toolbar>
-    </AppBar>
+    <>
+      <AppBar elevation={trigger ? 4 : 0}>
+        <Toolbar>
+          <Typography variant="h6" className={classes.title}>
+            便签
+          </Typography>
+          {displayName === null
+            ? <Button color="inherit" onClick={showLogin}>登入</Button>
+            : <Button color="inherit" onClick={handleLogout}>{displayName}</Button>}
+        </Toolbar>
+      </AppBar>
+      <Toolbar />
+    </>
   );
 };
 
