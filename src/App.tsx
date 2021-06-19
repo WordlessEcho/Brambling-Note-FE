@@ -104,7 +104,6 @@ const App = () => {
           : (
             <Notes
               notes={notes}
-              setNotes={setNotes}
               updateNote={handleNoteUpdate}
               deleteNote={handleNoteDelete}
               setErrorMessage={setErrorMessage}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import {
   TableContainer, Paper, Table,
@@ -14,7 +14,6 @@ import { toErrorMessage } from '../utils';
 
 type Props = {
   notes: Note[],
-  setNotes: (arg: Note[]) => void,
   updateNote: (id: string, newNote: NewNote) => Promise<void>,
   deleteNote: (id: string) => Promise<void>,
   setErrorMessage: (message: ErrorMessage) => void,
@@ -27,8 +26,9 @@ const defaultHeads: HeadCell[] = [
 ];
 
 const Notes = ({
-  notes, setNotes, updateNote, deleteNote, setErrorMessage,
+  notes, updateNote, deleteNote, setErrorMessage,
 }: Props) => {
+  const [sortedNotes, setSortedNotes] = useState(notes);
   const [headsCanBeSorted, setHeadsCanBeSorted] = useState<HeadCell[]>(defaultHeads);
 
   const handleNoteError = (error: Error, operation: string) => {
@@ -48,9 +48,47 @@ const Notes = ({
         ? { ...head, direction: head.direction === 'desc' ? 'asc' : 'desc' }
         : { ...head, direction: null }
     )));
-    // TODO
-    setNotes(notes);
   };
+
+  useEffect(() => {
+    const condition = headsCanBeSorted.find((el) => el.direction !== null);
+
+    if (condition === null || condition === undefined) {
+      setSortedNotes(notes);
+    } else {
+      const emptyArray: Note[] = [];
+
+      switch (condition.id) {
+        case 'date':
+          setSortedNotes(emptyArray.concat(sortedNotes).sort((a, b) => {
+            const aMs = new Date(a.date).getTime();
+            const bMs = new Date(b.date).getTime();
+
+            if (condition.direction === 'asc') {
+              return aMs - bMs;
+            }
+
+            return bMs - aMs;
+          }));
+          break;
+        case 'important':
+          setSortedNotes(emptyArray.concat(sortedNotes).sort((a, b) => {
+            if (a.important === b.important) {
+              return 0;
+            }
+
+            if (condition.direction === 'asc') {
+              return a.important ? 1 : -1;
+            }
+
+            return a.important ? -1 : 1;
+          }));
+          break;
+        default:
+          setSortedNotes(sortedNotes);
+      }
+    }
+  }, [notes, headsCanBeSorted]);
 
   return (
     <TableContainer component={Paper}>
@@ -78,7 +116,7 @@ const Notes = ({
           </TableRow>
         </TableHead>
         <TableBody>
-          {notes.map((note) => (
+          {sortedNotes.map((note) => (
             <NoteCell
               key={note.id}
               note={note}
