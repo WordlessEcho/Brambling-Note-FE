@@ -20,9 +20,12 @@ import NewFab from './components/NewFab';
 import NoteForm from './components/NoteForm';
 
 const theme = createMuiTheme({}, zhCN);
-const useStyles = makeStyles((t: Theme) => createStyles(
-  { appBarSpacer: t.mixins.toolbar },
-));
+const useStyles = makeStyles((t: Theme) => createStyles({
+  appBarSpacer: t.mixins.toolbar,
+  fabSpacer: {
+    height: t.spacing(11),
+  },
+}));
 
 const App = () => {
   const classes = useStyles();
@@ -124,6 +127,8 @@ const App = () => {
               setErrorMessage={setErrorMessage}
             />
           )}
+
+        <div className={classes.fabSpacer} />
       </Container>
 
       {/* TODO: we might use router after */}
