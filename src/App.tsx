@@ -16,6 +16,7 @@ import ApplicationBar from './components/ApplicationBar';
 import Login from './components/Login';
 import ErrorDialog from './components/ErrorDialog';
 import Notes from './components/Notes';
+import NewFab from './components/NewFab';
 
 const theme = createMuiTheme({}, zhCN);
 const useStyles = makeStyles((t: Theme) => createStyles(
@@ -28,6 +29,7 @@ const App = () => {
   const [user, setUser] = useState<User | null>(null);
   const [notes, setNotes] = useState<Note[]>([]);
   const [showLogin, setShowLogin] = useState(false);
+  const [showNoteForm, setShowNoteForm] = useState(false);
   const [errorMessage, setErrorMessage] = useState<ErrorMessage | null>(null);
 
   const handleLogin = (loginUser: LoginUser) => (
@@ -110,6 +112,9 @@ const App = () => {
             />
           )}
       </Container>
+
+      {/* TODO: we might use router after */}
+      {user === null ? null : <NewFab showNoteForm={() => setShowNoteForm(true)} />}
     </ThemeProvider>
   );
 };
