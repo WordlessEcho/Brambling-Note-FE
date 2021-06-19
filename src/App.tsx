@@ -66,8 +66,9 @@ const App = () => {
         setUser(parsedUser);
         noteService.setToken(parsedUser.token);
         noteService.getAll().then((n) => setNotes(n));
+      } else {
+        setNotes([]);
       }
-      // TODO: display a user guide
     }
   }, [user]);
 
