@@ -38,7 +38,8 @@ const Notes = ({
       }
     }
 
-    return setErrorMessage(toErrorMessage(error));
+    const friendlyLog = toErrorMessage(error);
+    return setErrorMessage(friendlyLog);
   };
 
   const sortNotes = (id: string) => () => {
