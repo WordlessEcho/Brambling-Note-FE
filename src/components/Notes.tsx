@@ -60,7 +60,7 @@ const Notes = ({
 
       switch (condition.id) {
         case 'date':
-          setSortedNotes(emptyArray.concat(sortedNotes).sort((a, b) => {
+          setSortedNotes(emptyArray.concat(notes).sort((a, b) => {
             const aMs = new Date(a.date).getTime();
             const bMs = new Date(b.date).getTime();
 
@@ -72,7 +72,7 @@ const Notes = ({
           }));
           break;
         case 'important':
-          setSortedNotes(emptyArray.concat(sortedNotes).sort((a, b) => {
+          setSortedNotes(emptyArray.concat(notes).sort((a, b) => {
             if (a.important === b.important) {
               return 0;
             }
@@ -85,7 +85,7 @@ const Notes = ({
           }));
           break;
         default:
-          setSortedNotes(sortedNotes);
+          setSortedNotes(notes);
       }
     }
   }, [notes, headsCanBeSorted]);
