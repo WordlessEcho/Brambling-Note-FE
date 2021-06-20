@@ -54,12 +54,6 @@ const NoteDetails = ({
     });
   };
 
-  const handleNoteDelete = () => {
-    deleteNote(id)
-      .then(() => hideDetails())
-      .catch((error) => handleNoteError(error, '删除'));
-  };
-
   useEffect(() => {
     if (display === false) {
       setNewContent(content);
@@ -89,7 +83,7 @@ const NoteDetails = ({
                 分享
               </Button>
               <Button
-                onClick={handleNoteDelete}
+                onClick={() => deleteNote(id).catch((error) => handleNoteError(error, '删除'))}
                 endIcon={<Delete />}
               >
                 删除
