@@ -122,8 +122,6 @@ const App = () => {
       if (cacheUser !== null) {
         const parsedUser = toUser(JSON.parse(cacheUser));
         setUser(parsedUser);
-        noteService.setToken(parsedUser.token);
-        noteService.getAll().then((n) => setNotes(n));
       } else {
         setNotes([]);
       }
