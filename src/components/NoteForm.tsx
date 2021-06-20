@@ -13,12 +13,13 @@ type Props = {
   hideDialog: () => void,
   setErrorMessage: (errorMessage: ErrorMessage) => void,
 };
-
 const useStyles = makeStyles((t: Theme) => createStyles({
   checkbox: {
     paddingTop: t.spacing(1),
   },
 }));
+
+const defaultNewNote = { content: '', important: false };
 
 const NoteForm = ({
   display, createNote, hideDialog, setErrorMessage,
@@ -27,14 +28,15 @@ const NoteForm = ({
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const [newNote, setNewNote] = useState<NewNote>({ content: '', important: false });
+  const [newNote, setNewNote] = useState<NewNote>(defaultNewNote);
 
   const onSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
 
-    createNote(newNote)
-      .then(() => hideDialog())
-      .catch((error) => setErrorMessage(toErrorMessage(error)));
+    createNote(newNote).catch((error) => setErrorMessage(toErrorMessage(error)));
+
+    hideDialog();
+    setNewNote(defaultNewNote)
   };
 
   return (
