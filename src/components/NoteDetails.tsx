@@ -13,7 +13,7 @@ type Props = {
   hideDetails: () => void,
   note: Note,
   updateNote: (id: string, newNote: NewNote) => Promise<void>,
-  deleteNote: (id: string) => Promise<void>,
+  deleteNote: (id: string) => void,
   handleNoteError: (error: Error, operation: string) => void,
 };
 
@@ -83,7 +83,7 @@ const NoteDetails = ({
                 分享
               </Button>
               <Button
-                onClick={() => deleteNote(id).catch((error) => handleNoteError(error, '删除'))}
+                onClick={() => deleteNote(id)}
                 endIcon={<Delete />}
               >
                 删除

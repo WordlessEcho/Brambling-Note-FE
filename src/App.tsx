@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-
+import axios from 'axios';
 import {
   Container, ThemeProvider, Theme, createStyles, makeStyles, createMuiTheme,
 } from '@material-ui/core';
@@ -10,14 +10,15 @@ import {
 } from './types';
 import loginService from './services/login';
 import noteService from './services/note';
-import { toUser } from './utils';
+import { toErrorMessage, toUser } from './utils';
 
 import ApplicationBar from './components/ApplicationBar';
 import Login from './components/Login';
 import ErrorDialog from './components/ErrorDialog';
-import Notes from './components/Notes';
-import NewFab from './components/NewFab';
 import NoteForm from './components/NoteForm';
+import Notes from './components/Notes';
+import NotificationSnackbar from './components/NotificationSnackbar';
+import NewFab from './components/NewFab';
 
 const theme = createMuiTheme({}, zhCN);
 const useStyles = makeStyles((t: Theme) => createStyles({
@@ -27,6 +28,9 @@ const useStyles = makeStyles((t: Theme) => createStyles({
   },
 }));
 
+type SnackbarOnClose = (e?: React.SyntheticEvent, reason?: string) => any;
+const UNDO_TIMEOUT = 5000;
+
 const App = () => {
   const classes = useStyles();
 
@@ -35,6 +39,9 @@ const App = () => {
   const [showLogin, setShowLogin] = useState(false);
   const [showNoteForm, setShowNoteForm] = useState(false);
   const [errorMessage, setErrorMessage] = useState<ErrorMessage | null>(null);
+  const [message, setMessage] = useState<string | null>(null);
+  const [noteToDelete, setNoteToDelete] = useState<Note | null>(null);
+  const [snackbarAction, setSnackbarAction] = useState<SnackbarOnClose | null>(null);
 
   const handleLogin = (loginUser: LoginUser) => (
     loginService.login(loginUser)
@@ -59,10 +66,48 @@ const App = () => {
       ))
   );
 
-  const handleNoteDelete = (id: string) => (
+  const resetSnackbar = (undo: boolean) => {
+    if (undo && noteToDelete !== null) {
+      setNotes(notes.concat(noteToDelete));
+    }
+
+    setSnackbarAction(null);
+    setMessage(null);
+    setNoteToDelete(null);
+  };
+
+  const getRemoverForSnackbar = (id: string) => (_e?: React.SyntheticEvent, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
     noteService.remove(id)
-      .then(() => setNotes(notes.filter((n) => n.id !== id)))
-  );
+      .catch((error) => {
+        if (axios.isAxiosError(error)) {
+          if (error.response && error.response.status === 404) {
+            return setErrorMessage({ title: '您要删除的便签已不存在', content: null });
+          }
+        }
+        const friendlyLog = toErrorMessage(error);
+        return setErrorMessage(friendlyLog);
+      })
+      .finally(() => resetSnackbar(false));
+  };
+
+  const handleNoteDelete = (id: string) => {
+    const note = notes.find((n) => n.id === id);
+
+    if (note === null || note === undefined) {
+      setErrorMessage({ title: '您要删除的便签已不存在', content: null });
+    } else {
+      setNoteToDelete(note);
+      setMessage(`便签「${note.content}」已被删除`);
+      setNotes(notes.filter((n) => n.id !== id));
+
+      const action = () => getRemoverForSnackbar(note.id);
+      setSnackbarAction(action);
+    }
+  };
 
   useEffect(() => {
     if (user !== null) {
@@ -131,6 +176,13 @@ const App = () => {
 
         <div className={classes.fabSpacer} />
       </Container>
+
+      <NotificationSnackbar
+        message={message}
+        timeout={UNDO_TIMEOUT}
+        action={snackbarAction}
+        actionUndo={resetSnackbar}
+      />
 
       {/* TODO: we might use router later */}
       {user === null ? null : <NewFab showNoteForm={() => setShowNoteForm(true)} />}

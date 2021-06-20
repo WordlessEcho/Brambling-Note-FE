@@ -15,7 +15,7 @@ import { toErrorMessage } from '../utils';
 type Props = {
   notes: Note[],
   updateNote: (id: string, newNote: NewNote) => Promise<void>,
-  deleteNote: (id: string) => Promise<void>,
+  deleteNote: (id: string) => void,
   setErrorMessage: (message: ErrorMessage) => void,
 };
 type HeadCell = { id: string, name: string, direction: SortDirection | null };

@@ -13,7 +13,7 @@ import NoteDetails from './NoteDetails';
 type Props = {
   note: Note,
   updateNote: (id: string, newNote: NewNote) => Promise<void>,
-  deleteNote: (id: string) => Promise<void>,
+  deleteNote: (id: string) => void,
   handleNoteError: (error: Error, operation: string) => void,
 };
 
