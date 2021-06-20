@@ -25,7 +25,7 @@ const ApplicationBar = ({ displayName, showLogin, handleLogout }: Props) => {
       <AppBar elevation={trigger ? 4 : 0}>
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
-            便签
+            燕雀便签
           </Typography>
           {displayName === null
             ? <Button color="inherit" onClick={showLogin}>登入</Button>
