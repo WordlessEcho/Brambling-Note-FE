@@ -20,7 +20,17 @@ import Notes from './components/Notes';
 import NotificationSnackbar from './components/NotificationSnackbar';
 import NewFab from './components/NewFab';
 
-const theme = createMuiTheme({}, zhCN);
+const theme = createMuiTheme({
+  typography: {
+    fontFamily: [
+      'Noto Sans SC',
+      'Roboto',
+      'Helvetica',
+      'Arial',
+      'sans-serif',
+    ].join(','),
+  },
+}, zhCN);
 const useStyles = makeStyles((t: Theme) => createStyles({
   appBarSpacer: t.mixins.toolbar,
   fabSpacer: {
