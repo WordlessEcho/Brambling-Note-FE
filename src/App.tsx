@@ -131,7 +131,7 @@ const App = () => {
         <div className={classes.fabSpacer} />
       </Container>
 
-      {/* TODO: we might use router after */}
+      {/* TODO: we might use router later */}
       {user === null ? null : <NewFab showNoteForm={() => setShowNoteForm(true)} />}
     </ThemeProvider>
   );
