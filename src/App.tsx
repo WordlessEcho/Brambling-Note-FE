@@ -98,6 +98,7 @@ const App = () => {
         setErrorMessage={setErrorMessage}
       />
 
+      {/* TODO: abstract to show more type of message */}
       <ErrorDialog
         message={errorMessage}
         hideDialog={() => setErrorMessage(null)}
