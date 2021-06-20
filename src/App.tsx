@@ -69,6 +69,8 @@ const App = () => {
   const resetSnackbar = (undo: boolean) => {
     if (undo && noteToDelete !== null) {
       setNotes(notes.concat(noteToDelete));
+    } else {
+      setErrorMessage({ title: '您要删除的便签已不存在', content: null });
     }
 
     setSnackbarAction(null);
