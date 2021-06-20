@@ -36,7 +36,7 @@ const NoteForm = ({
     createNote(newNote).catch((error) => setErrorMessage(toErrorMessage(error)));
 
     hideDialog();
-    setNewNote(defaultNewNote)
+    setNewNote(defaultNewNote);
   };
 
   return (
