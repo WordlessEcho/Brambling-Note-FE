@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import {
   useTheme, useMediaQuery, Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button,
+  createStyles, Theme, makeStyles,
 } from '@material-ui/core';
 import { ErrorMessage, LoginUser } from '../types';
 import { toErrorMessage } from '../utils';
@@ -13,6 +14,12 @@ type Props = {
   setErrorMessage: (message: ErrorMessage) => void,
 };
 
+const useStyles = makeStyles(({ spacing }: Theme) => createStyles({
+  afterInput: {
+    marginTop: spacing(1),
+  },
+}));
+
 const Login = ({
   display, hideDialog, login, setErrorMessage,
 }: Props) => {
@@ -21,6 +28,7 @@ const Login = ({
 
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+  const classes = useStyles();
 
   const handleExit = () => {
     setUsername('');
@@ -63,6 +71,7 @@ const Login = ({
             onChange={({ target }) => setUsername(target.value)}
           />
           <TextField
+            className={classes.afterInput}
             color="primary"
             fullWidth
             label="密码"
