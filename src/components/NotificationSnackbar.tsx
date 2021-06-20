@@ -33,6 +33,7 @@ const NotificationSnackbar = ({
 
   return (
     <Snackbar
+      key={cachedMessage}
       open={message !== null}
       onClose={action === null ? undefined : action}
       autoHideDuration={timeout}

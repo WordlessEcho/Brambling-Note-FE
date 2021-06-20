@@ -78,11 +78,7 @@ const App = () => {
     setNoteToDelete(null);
   };
 
-  const getRemoverForSnackbar = (id: string) => (_e?: React.SyntheticEvent, reason?: string) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
+  const removeNote = (id: string) => (
     noteService.remove(id)
       .catch((error) => {
         if (axios.isAxiosError(error)) {
@@ -93,7 +89,14 @@ const App = () => {
         const friendlyLog = toErrorMessage(error);
         return setErrorMessage(friendlyLog);
       })
-      .finally(() => resetSnackbar(false));
+  );
+
+  const getRemoverForSnackbar = (id: string) => (_e?: React.SyntheticEvent, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    removeNote(id).finally(() => resetSnackbar(false));
   };
 
   const handleNoteDelete = (id: string) => {
@@ -102,6 +105,10 @@ const App = () => {
     if (note === null || note === undefined) {
       setErrorMessage({ title: '您要删除的便签已不存在', content: null });
     } else {
+      if (noteToDelete !== null) {
+        removeNote(noteToDelete.id);
+      }
+
       setNoteToDelete(note);
       setMessage(`便签「${note.content}」已被删除`);
       setNotes(notes.filter((n) => n.id !== id));
