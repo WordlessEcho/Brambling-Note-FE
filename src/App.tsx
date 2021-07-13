@@ -202,7 +202,9 @@ const App = () => {
       />
 
       {/* TODO: we might use router later */}
-      {user === null ? null : <NewFab showNoteForm={() => setShowNoteForm(true)} />}
+      {user === null
+        ? null
+        : <NewFab message={message} showNoteForm={() => setShowNoteForm(true)} />}
     </ThemeProvider>
   );
 };

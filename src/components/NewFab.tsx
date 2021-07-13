@@ -4,16 +4,22 @@ import {
 } from '@material-ui/core';
 import Edit from '@material-ui/icons/Edit';
 
-const useStyles = makeStyles((t: Theme) => createStyles({
+type Props = { message: string | null, showNoteForm: () => void };
+const useStyles = makeStyles<Theme, { message: string | null }>((t: Theme) => createStyles({
   fab: {
     position: 'fixed',
     bottom: t.spacing(2),
     right: t.spacing(2),
+
+    // TODO: handle multi-line snackbar
+    [t.breakpoints.down('xs')]: {
+      bottom: ({ message }) => (message === null ? t.spacing(2) : t.spacing(8)),
+    },
   },
 }));
 
-const NewFab = ({ showNoteForm }: { showNoteForm: () => void }) => {
-  const classes = useStyles();
+const NewFab = ({ message, showNoteForm }: Props) => {
+  const classes = useStyles({ message });
 
   return (
     <Fab
