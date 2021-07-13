@@ -31,7 +31,6 @@ const useStyles = makeStyles((t: Theme) => createStyles({
 const getTransistion = (props: TransitionProps) => <Slide {...props} direction="up" />;
 
 const NotificationSnackbar = ({
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   message, timeout, action, actionUndo,
 }: Props) => {
   // keep message in exit animation
