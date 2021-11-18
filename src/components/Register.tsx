@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import {
   useTheme, useMediaQuery, Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button,
   createStyles, Theme, makeStyles,
@@ -12,6 +13,7 @@ type Props = {
   register: (arg: NewUser) => Promise<User>,
   getActivateState: (email: string) => Promise<boolean>,
   resendEmail: (email: string) => Promise<void>,
+  setMessage: (message: string) => void,
   setErrorMessage: (message: ErrorMessage) => void,
 };
 
@@ -22,7 +24,7 @@ const useStyles = makeStyles(({ spacing }: Theme) => createStyles({
 }));
 
 const Register = ({
-  display, hideDialog, register, getActivateState, resendEmail, setErrorMessage,
+  display, hideDialog, register, getActivateState, resendEmail, setMessage, setErrorMessage,
 }: Props) => {
   const [email, setEmail] = useState('');
   const [userExisted, setUserExisted] = useState(false);
@@ -43,10 +45,11 @@ const Register = ({
 
   const onSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    register({
-      email, name, password,
-      // TODO: prompt a toast while registering successfully
-    }).then(() => handleExit())
+    register({ email, name, password })
+      .then(() => {
+        handleExit();
+        setMessage('请检查收件箱或垃圾邮件内的注册邮件，并点击邮件内的链接完成注册。');
+      })
       .catch((error) => {
         const friendlyLog = toErrorMessage(error);
         return setErrorMessage(friendlyLog);
@@ -58,15 +61,31 @@ const Register = ({
       setUserExisted(true);
       setUserActivated(activated);
     }).catch((error) => {
-      if (error.response.status !== 404) {
-        const friendlyLog = toErrorMessage(error);
-        return setErrorMessage(friendlyLog);
+      if (axios.isAxiosError(error)) {
+        if (error.response && error.response.status !== 404) {
+          const friendlyLog = toErrorMessage(error);
+          return setErrorMessage(friendlyLog);
+        }
       }
 
       setUserExisted(false);
       setUserActivated(false);
       return null;
     });
+  };
+
+  const handleResend = () => {
+    resendEmail(email).then(hideDialog)
+      .catch((error) => {
+        if (axios.isAxiosError(error)) {
+          if (error.response && error.response.status === 429) {
+            return setMessage('重发次数已达上限，请明天再试。');
+          }
+        }
+
+        const friendlyLog = toErrorMessage(error);
+        return setErrorMessage(friendlyLog);
+      });
   };
 
   return (
@@ -97,7 +116,7 @@ const Register = ({
               color="secondary"
               fullWidth
               variant="contained"
-              onClick={() => resendEmail(email)}
+              onClick={handleResend}
             >
               重新发送激活邮件
             </Button>

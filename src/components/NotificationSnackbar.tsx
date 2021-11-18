@@ -7,7 +7,7 @@ type Props = {
   message: string | null,
   timeout: number,
   action: ((e?: React.SyntheticEvent, reason?: string) => any) | null,
-  actionUndo: (undo: boolean) => void,
+  actionUndo: (undo: boolean) => void | null,
 };
 type TransitionProps = Omit<SlideProps, 'direction'>;
 const useStyles = makeStyles((t: Theme) => createStyles({
@@ -58,11 +58,11 @@ const NotificationSnackbar = ({
       <SnackbarContent
         className={classes.snackbarContent}
         message={cachedMessage}
-        action={(
+        action={actionUndo ? (
           <Button color="secondary" size="small" onClick={() => actionUndo(true)}>
             撤销
           </Button>
-        )}
+        ) : null}
       />
     </Snackbar>
   );

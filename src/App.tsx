@@ -175,6 +175,7 @@ const App = () => {
         register={handleRegister}
         getActivateState={getActivateState}
         resendEmail={resendVerifyEmail}
+        setMessage={setMessage}
         setErrorMessage={setErrorMessage}
       />
 
