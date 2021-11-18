@@ -6,6 +6,7 @@ interface BaseUser {
 export interface User extends BaseUser {
   id: string;
   token: string;
+  verified: boolean;
 }
 
 export interface NewUser extends BaseUser {

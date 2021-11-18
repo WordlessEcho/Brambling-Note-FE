@@ -10,16 +10,27 @@ const parseString = (name: string, str: unknown): string => {
   }
 };
 
-type Fields = { id: unknown, email: unknown, name: unknown, token: unknown };
+const isBoolean = (bool: unknown): bool is boolean => typeof bool === 'boolean';
+
+const parseBoolean = (bool: unknown): boolean => {
+  if (!isBoolean(bool)) {
+    throw new TypeError(`Incorrect or missing boolean: ${bool}`);
+  } else {
+    return bool;
+  }
+};
+
+type Fields = { id: unknown, email: unknown, name: unknown, token: unknown, verified: unknown };
 
 export const toUser = ({
-  id, email, name, token,
+  id, email, name, token, verified,
 }: Fields): User => {
   const user: User = {
     id: parseString('id', id),
     email: parseString('email', email),
     name: parseString('name', name),
     token: parseString('token', token),
+    verified: parseBoolean(verified),
   };
 
   return user;

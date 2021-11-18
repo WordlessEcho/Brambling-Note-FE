@@ -6,6 +6,7 @@ import {
 type Props = {
   displayName: string | null,
   showLogin: () => void,
+  showRegister: () => void,
   handleLogout: () => void,
 };
 
@@ -13,7 +14,9 @@ const useStyles = makeStyles(() => ({
   title: { flexGrow: 1 },
 }));
 
-const ApplicationBar = ({ displayName, showLogin, handleLogout }: Props) => {
+const ApplicationBar = ({
+  displayName, showLogin, showRegister, handleLogout,
+}: Props) => {
   const classes = useStyles();
   const trigger = useScrollTrigger({
     disableHysteresis: true,
@@ -28,7 +31,12 @@ const ApplicationBar = ({ displayName, showLogin, handleLogout }: Props) => {
             燕雀便签
           </Typography>
           {displayName === null
-            ? <Button color="inherit" onClick={showLogin}>登入</Button>
+            ? (
+              <div>
+                <Button color="inherit" onClick={showRegister}>注册</Button>
+                <Button color="inherit" onClick={showLogin}>登入</Button>
+              </div>
+            )
             : <Button color="inherit" onClick={handleLogout}>{displayName}</Button>}
         </Toolbar>
       </AppBar>

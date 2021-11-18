@@ -6,13 +6,16 @@ import {
 import { zhCN } from '@material-ui/core/locale';
 
 import {
-  ErrorMessage, LoginUser, NewNote, Note, User,
+  ErrorMessage, LoginUser, NewNote, NewUser, Note, User,
 } from './types';
 import loginService from './services/login';
+import registerService from './services/user';
+import emailService from './services/email';
 import noteService from './services/note';
 import { toErrorMessage, toUser } from './utils';
 
 import ApplicationBar from './components/ApplicationBar';
+import Register from './components/Register';
 import Login from './components/Login';
 import ErrorDialog from './components/ErrorDialog';
 import NoteForm from './components/NoteForm';
@@ -47,6 +50,7 @@ const App = () => {
   const [user, setUser] = useState<User | null>(null);
   const [notes, setNotes] = useState<Note[]>([]);
   const [showLogin, setShowLogin] = useState(false);
+  const [showRegister, setShowRegister] = useState(false);
   const [showNoteForm, setShowNoteForm] = useState(false);
   const [errorMessage, setErrorMessage] = useState<ErrorMessage | null>(null);
   const [message, setMessage] = useState<string | null>(null);
@@ -57,6 +61,10 @@ const App = () => {
     loginService.login(loginUser)
       .then((u) => setUser(u))
   );
+
+  const handleRegister = (newUser: NewUser) => registerService.create(newUser);
+  const getActivateState = (email: string) => registerService.isVerified(email);
+  const resendVerifyEmail = (email: string) => emailService.resendVerify(email);
 
   const handleLogout = () => {
     localStorage.removeItem('user');
@@ -151,12 +159,22 @@ const App = () => {
         handleLogout={handleLogout}
         displayName={user === null ? null : user.name}
         showLogin={() => setShowLogin(true)}
+        showRegister={() => setShowRegister(true)}
       />
 
       <Login
         display={showLogin}
         hideDialog={() => setShowLogin(false)}
         login={handleLogin}
+        setErrorMessage={setErrorMessage}
+      />
+
+      <Register
+        display={showRegister}
+        hideDialog={() => setShowRegister(false)}
+        register={handleRegister}
+        getActivateState={getActivateState}
+        resendEmail={resendVerifyEmail}
         setErrorMessage={setErrorMessage}
       />
 

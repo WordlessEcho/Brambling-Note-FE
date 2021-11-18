@@ -8,4 +8,9 @@ const create = async (newUser: NewUser) => {
   return response.data;
 };
 
-export default { create };
+const isVerified = async (email: string) => {
+  const response = await axios.post<{ verified: boolean }>(`${baseUrl}/${email}/is-verified/`);
+  return response.data.verified;
+};
+
+export default { create, isVerified };
