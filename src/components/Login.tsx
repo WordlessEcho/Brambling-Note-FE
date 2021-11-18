@@ -23,7 +23,7 @@ const useStyles = makeStyles(({ spacing }: Theme) => createStyles({
 const Login = ({
   display, hideDialog, login, setErrorMessage,
 }: Props) => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const theme = useTheme();
@@ -31,14 +31,14 @@ const Login = ({
   const classes = useStyles();
 
   const handleExit = () => {
-    setUsername('');
+    setEmail('');
     setPassword('');
     hideDialog();
   };
 
   const onSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    login({ username, password })
+    login({ email, password })
       .then(() => handleExit())
       .catch((error) => {
         if (axios.isAxiosError(error)) {
@@ -66,9 +66,9 @@ const Login = ({
           <TextField
             color="primary"
             fullWidth
-            label="用户名"
-            value={username}
-            onChange={({ target }) => setUsername(target.value)}
+            label="邮箱"
+            value={email}
+            onChange={({ target }) => setEmail(target.value)}
           />
           <TextField
             className={classes.afterInput}

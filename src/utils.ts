@@ -10,14 +10,14 @@ const parseString = (name: string, str: unknown): string => {
   }
 };
 
-type Fields = { id: unknown, username: unknown, name: unknown, token: unknown };
+type Fields = { id: unknown, email: unknown, name: unknown, token: unknown };
 
 export const toUser = ({
-  id, username, name, token,
+  id, email, name, token,
 }: Fields): User => {
   const user: User = {
     id: parseString('id', id),
-    username: parseString('username', username),
+    email: parseString('email', email),
     name: parseString('name', name),
     token: parseString('token', token),
   };

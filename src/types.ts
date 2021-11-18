@@ -1,5 +1,5 @@
 interface BaseUser {
-  username: string;
+  email: string;
   name: string;
 }
 
