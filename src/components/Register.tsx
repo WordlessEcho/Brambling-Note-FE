@@ -62,6 +62,9 @@ const Register = ({
         const friendlyLog = toErrorMessage(error);
         return setErrorMessage(friendlyLog);
       }
+
+      setUserExisted(false);
+      setUserActivated(false);
       return null;
     });
   };
