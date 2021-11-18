@@ -9,7 +9,7 @@ const create = async (newUser: NewUser) => {
 };
 
 const isVerified = async (email: string) => {
-  const response = await axios.post<{ verified: boolean }>(`${baseUrl}/${email}/is-verified/`);
+  const response = await axios.get<{ verified: boolean }>(`${baseUrl}/${email}/is-verified/`);
   return response.data.verified;
 };
 
