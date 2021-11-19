@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import {
-  Container, ThemeProvider, Theme, createStyles, makeStyles, createMuiTheme,
+  Container, ThemeProvider, Theme, createStyles, makeStyles, createTheme,
 } from '@material-ui/core';
 import { zhCN } from '@material-ui/core/locale';
 
@@ -24,7 +24,7 @@ import Notes from './components/Notes';
 import NotificationSnackbar from './components/NotificationSnackbar';
 import NewFab from './components/NewFab';
 
-const theme = createMuiTheme({
+const theme = createTheme({
   typography: {
     fontFamily: [
       'Noto Sans SC',
