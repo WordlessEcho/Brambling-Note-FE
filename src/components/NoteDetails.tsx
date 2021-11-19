@@ -75,7 +75,7 @@ const NoteDetails = ({
               value={newContent}
               onChange={({ target }) => setNewContent(target.value)}
             />
-            <Grid container direction="row" justify="flex-end" className={classes.buttons}>
+            <Grid container direction="row" justifyContent="flex-end" className={classes.buttons}>
               <Button
                 onClick={share}
                 endIcon={<Share />}
