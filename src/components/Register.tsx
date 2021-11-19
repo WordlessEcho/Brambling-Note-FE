@@ -4,7 +4,9 @@ import {
   useTheme, useMediaQuery, Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button,
   createStyles, Theme, makeStyles,
 } from '@material-ui/core';
-import { ErrorMessage, NewUser, User } from '../types';
+import {
+  ErrorMessage, NewUser, SnackbarMessage, User,
+} from '../types';
 import { toErrorMessage } from '../utils';
 
 type Props = {
@@ -13,7 +15,7 @@ type Props = {
   register: (arg: NewUser) => Promise<User>,
   getActivateState: (email: string) => Promise<boolean>,
   resendEmail: (email: string) => Promise<void>,
-  setMessage: (message: string) => void,
+  setSnackbar: SnackbarMessage,
   setErrorMessage: (message: ErrorMessage) => void,
 };
 
@@ -24,7 +26,7 @@ const useStyles = makeStyles(({ spacing }: Theme) => createStyles({
 }));
 
 const Register = ({
-  display, hideDialog, register, getActivateState, resendEmail, setMessage, setErrorMessage,
+  display, hideDialog, register, getActivateState, resendEmail, setSnackbar, setErrorMessage,
 }: Props) => {
   const [email, setEmail] = useState('');
   const [userExisted, setUserExisted] = useState(false);
@@ -48,7 +50,7 @@ const Register = ({
     register({ email, name, password })
       .then(() => {
         handleExit();
-        setMessage('请检查收件箱或垃圾邮件内的注册邮件，并点击邮件内的链接完成注册。');
+        setSnackbar('请检查收件箱或垃圾邮件内的注册邮件，并点击邮件内的链接完成注册。', null);
       })
       .catch((error) => {
         const friendlyLog = toErrorMessage(error);
@@ -79,7 +81,7 @@ const Register = ({
       .catch((error) => {
         if (axios.isAxiosError(error)) {
           if (error.response && error.response.status === 429) {
-            return setMessage('重发次数已达上限，请明天再试。');
+            return setSnackbar('重发次数已达上限，请明天再试。', null);
           }
         }
 

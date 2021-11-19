@@ -4,14 +4,14 @@ import {
   useTheme, useMediaQuery, Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button,
   createStyles, Theme, makeStyles,
 } from '@material-ui/core';
-import { ErrorMessage, NewPassword } from '../types';
+import { ErrorMessage, NewPassword, SnackbarMessage } from '../types';
 import { toErrorMessage } from '../utils';
 
 type Props = {
   display: boolean,
   hideDialog: () => void,
   editPassword: (arg: NewPassword) => Promise<void>,
-  setMessage: (message: string) => void,
+  setSnackbar: SnackbarMessage,
   setErrorMessage: (message: ErrorMessage) => void,
 };
 
@@ -22,7 +22,7 @@ const useStyles = makeStyles(({ spacing }: Theme) => createStyles({
 }));
 
 const EditPassword = ({
-  display, hideDialog, editPassword, setMessage, setErrorMessage,
+  display, hideDialog, editPassword, setSnackbar, setErrorMessage,
 }: Props) => {
   const [password, setPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -42,10 +42,8 @@ const EditPassword = ({
   const onSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
     editPassword({ password, newPassword, confirmPassword })
-      .then(() => {
-        handleExit();
-        setMessage('密码修改成功，请重新登入。');
-      })
+      // TODO: possible to revoke json web token?
+      .then(() => setSnackbar('密码修改成功。', null))
       .catch((error) => {
         if (axios.isAxiosError(error)) {
           if (error.response && error.response.status === 401) {

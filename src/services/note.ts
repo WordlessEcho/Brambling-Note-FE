@@ -40,6 +40,11 @@ const remove = (id: string) => (
   axios.delete<void>(`${baseUrl}/${id}`, getConfig())
 );
 
+const undoRemove = async (id: string) => {
+  const respones = await axios.get<Note>(`${baseUrl}/undo-delete/${id}`, getConfig());
+  return respones.data;
+};
+
 export default {
   setToken,
   clearToken,
@@ -47,4 +52,5 @@ export default {
   add,
   update,
   remove,
+  undoRemove,
 };

@@ -6,8 +6,8 @@ import {
 type Props = {
   message: string | null,
   timeout: number,
-  action: ((e?: React.SyntheticEvent, reason?: string) => any) | null,
-  actionUndo: (undo: boolean) => void | null,
+  actionUndo: (() => void) | null,
+  hideSnackbar: (() => any),
 };
 type TransitionProps = Omit<SlideProps, 'direction'>;
 const useStyles = makeStyles((t: Theme) => createStyles({
@@ -31,35 +31,68 @@ const useStyles = makeStyles((t: Theme) => createStyles({
 const getTransistion = (props: TransitionProps) => <Slide {...props} direction="up" />;
 
 const NotificationSnackbar = ({
-  message, timeout, action, actionUndo,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  message, timeout, actionUndo, hideSnackbar,
 }: Props) => {
   // keep message in exit animation
   const [cachedMessage, setCacheMessage] = useState(message);
+  const [cachedUndo, setCacheUndo] = useState<(() => void) | null>(null);
   const classes = useStyles();
+
+  const action = (_e?: React.SyntheticEvent, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    hideSnackbar();
+  };
 
   useEffect(() => {
     if (message !== null) {
       setCacheMessage(message);
     } else {
-      // protect user privacy
+      // keep message in exit animation
       setTimeout(() => setCacheMessage(null), 1000);
     }
   }, [message]);
+
+  useEffect(() => {
+    if (actionUndo) {
+      const withUndo = () => {
+        try {
+          actionUndo();
+        } finally {
+          hideSnackbar();
+        }
+      };
+
+      // idk why I have to make it as arrow function, but it works
+      // see handleNoteDelete() in App.tsx
+      setCacheUndo(() => withUndo);
+    } else {
+      // keep undo button in exit animation
+      setTimeout(() => setCacheUndo(null), 1000);
+    }
+  }, [actionUndo]);
 
   return (
     <Snackbar
       key={cachedMessage}
       className={classes.snackbar}
       open={message !== null}
-      onClose={action === null ? undefined : action}
+      onClose={action}
       autoHideDuration={timeout}
       TransitionComponent={getTransistion}
     >
       <SnackbarContent
         className={classes.snackbarContent}
         message={cachedMessage}
-        action={actionUndo ? (
-          <Button color="secondary" size="small" onClick={() => actionUndo(true)}>
+        action={cachedUndo ? (
+          <Button
+            color="secondary"
+            size="small"
+            onClick={cachedUndo}
+          >
             撤销
           </Button>
         ) : null}

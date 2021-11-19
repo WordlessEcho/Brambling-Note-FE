@@ -34,4 +34,6 @@ export interface Note {
 
 export type NewNote = Omit<Note, 'id' | 'date' | 'user'>;
 
+export type SnackbarMessage = (content: string, actionUndo: (() => any) | null) => void;
+
 export type ErrorMessage = { title: string | null, content: string | null };
