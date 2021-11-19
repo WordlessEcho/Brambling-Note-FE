@@ -88,8 +88,8 @@ const App = () => {
       throw new Error('User email is null');
     }
 
-    return userService.changePassword({ ...newPassword, email: user.email })
-      .then(handleLogout);
+    // TODO: possible to revoke json web token?
+    return userService.changePassword({ ...newPassword, email: user.email });
   };
 
   const handleNoteCreate = (newNote: NewNote) => (

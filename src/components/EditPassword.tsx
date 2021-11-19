@@ -27,6 +27,7 @@ const EditPassword = ({
   const [password, setPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [wrongPwdText, setWrongPwdText] = useState<string | null>(null);
 
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
@@ -36,14 +37,22 @@ const EditPassword = ({
     setPassword('');
     setNewPassword('');
     setConfirmPassword('');
+    setWrongPwdText(null);
     hideDialog();
   };
 
   const onSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    editPassword({ password, newPassword, confirmPassword })
-      // TODO: possible to revoke json web token?
-      .then(() => setSnackbar('密码修改成功。', null))
+    if (newPassword !== confirmPassword) {
+      setWrongPwdText('两次输入的密码不一致');
+      return;
+    }
+
+    editPassword({ password, newPassword })
+      .then(() => {
+        handleExit();
+        setSnackbar('密码修改成功。', null);
+      })
       .catch((error) => {
         if (axios.isAxiosError(error)) {
           if (error.response && error.response.status === 401) {
@@ -83,6 +92,8 @@ const EditPassword = ({
           <TextField
             className={classes.afterInput}
             color="primary"
+            error={!!wrongPwdText}
+            helperText={wrongPwdText}
             fullWidth
             label="新密码"
             type="password"
@@ -92,6 +103,8 @@ const EditPassword = ({
           <TextField
             className={classes.afterInput}
             color="primary"
+            error={!!wrongPwdText}
+            helperText={wrongPwdText}
             fullWidth
             label="再次输入新密码"
             type="password"
