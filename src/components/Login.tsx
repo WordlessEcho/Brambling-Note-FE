@@ -25,6 +25,7 @@ const Login = ({
 }: Props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [wrongPwdText, setWrongPwdText] = useState<string | null>(null);
 
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
@@ -33,17 +34,21 @@ const Login = ({
   const handleExit = () => {
     setEmail('');
     setPassword('');
+    setWrongPwdText(null);
     hideDialog();
   };
 
   const onSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
+    // make error readble for inputing multiple times of wrong password
+    setWrongPwdText(null);
+
     login({ email, password })
       .then(() => handleExit())
       .catch((error) => {
         if (axios.isAxiosError(error)) {
           if (error.response && error.response.status === 401) {
-            return setErrorMessage({ title: '您输入的用户名或密码有误', content: null });
+            return setWrongPwdText('您输入的用户名或密码有误');
           }
         }
 
@@ -65,6 +70,8 @@ const Login = ({
         <DialogContent>
           <TextField
             color="primary"
+            error={!!wrongPwdText}
+            helperText={wrongPwdText}
             fullWidth
             label="邮箱"
             value={email}
@@ -72,6 +79,8 @@ const Login = ({
           />
           <TextField
             className={classes.afterInput}
+            error={!!wrongPwdText}
+            helperText={wrongPwdText}
             color="primary"
             fullWidth
             label="密码"
