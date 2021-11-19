@@ -52,7 +52,9 @@ const ErrorDialog = ({ message, hideDialog }: Props) => {
       fullWidth
       maxWidth="sm"
       open={message !== null}
-      onEnter={initializeDividers}
+      TransitionProps={{
+        onEnter: initializeDividers,
+      }}
       aria-labelledby="error-dialog-title"
       scroll="paper"
     >
