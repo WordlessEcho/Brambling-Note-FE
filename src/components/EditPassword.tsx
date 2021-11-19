@@ -43,6 +43,8 @@ const EditPassword = ({
 
   const onSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
+    // make error readble for inputing multiple times of wrong password
+    setWrongPwdText(null);
     if (newPassword !== confirmPassword) {
       setWrongPwdText('两次输入的密码不一致');
       return;
