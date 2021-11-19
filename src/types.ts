@@ -13,6 +13,15 @@ export interface NewUser extends BaseUser {
   password: string;
 }
 
+export interface NewPasswordUser {
+  email: string;
+  password: string;
+  newPassword: string;
+  confirmPassword: string;
+}
+
+export type NewPassword = Omit<NewPasswordUser, 'email'>;
+
 export type LoginUser = Omit<NewUser, 'name'>;
 
 export interface Note {

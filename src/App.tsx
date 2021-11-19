@@ -6,17 +6,18 @@ import {
 import { zhCN } from '@material-ui/core/locale';
 
 import {
-  ErrorMessage, LoginUser, NewNote, NewUser, Note, User,
+  ErrorMessage, LoginUser, NewNote, NewPassword, NewUser, Note, User,
 } from './types';
 import loginService from './services/login';
-import registerService from './services/user';
+import userService from './services/user';
 import emailService from './services/email';
 import noteService from './services/note';
 import { toErrorMessage, toUser } from './utils';
 
 import ApplicationBar from './components/ApplicationBar';
-import Register from './components/Register';
 import Login from './components/Login';
+import EditPassword from './components/EditPassword';
+import Register from './components/Register';
 import ErrorDialog from './components/ErrorDialog';
 import NoteForm from './components/NoteForm';
 import Notes from './components/Notes';
@@ -50,6 +51,7 @@ const App = () => {
   const [user, setUser] = useState<User | null>(null);
   const [notes, setNotes] = useState<Note[]>([]);
   const [showLogin, setShowLogin] = useState(false);
+  const [showEditPassword, setShowEditPassword] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
   const [showNoteForm, setShowNoteForm] = useState(false);
   const [errorMessage, setErrorMessage] = useState<ErrorMessage | null>(null);
@@ -62,14 +64,24 @@ const App = () => {
       .then((u) => setUser(u))
   );
 
-  const handleRegister = (newUser: NewUser) => registerService.create(newUser);
-  const getActivateState = (email: string) => registerService.isVerified(email);
-  const resendVerifyEmail = (email: string) => emailService.resendVerify(email);
-
   const handleLogout = () => {
     localStorage.removeItem('user');
     noteService.clearToken();
     setUser(null);
+  };
+
+  const handleRegister = (newUser: NewUser) => userService.create(newUser);
+  const getActivateState = (email: string) => userService.isVerified(email);
+  const resendVerifyEmail = (email: string) => emailService.resendVerify(email);
+
+  const handleEditPassword = async (newPassword: NewPassword) => {
+    if (!(user && user.email)) {
+      // TODO: use constract instand of hard code
+      throw new Error('User email is null');
+    }
+
+    return userService.changePassword({ ...newPassword, email: user.email })
+      .then(handleLogout);
   };
 
   const handleNoteCreate = (newNote: NewNote) => (
@@ -159,6 +171,7 @@ const App = () => {
         handleLogout={handleLogout}
         displayName={user === null ? null : user.name}
         showLogin={() => setShowLogin(true)}
+        showEditPassword={() => setShowEditPassword(true)}
         showRegister={() => setShowRegister(true)}
       />
 
@@ -166,6 +179,14 @@ const App = () => {
         display={showLogin}
         hideDialog={() => setShowLogin(false)}
         login={handleLogin}
+        setErrorMessage={setErrorMessage}
+      />
+
+      <EditPassword
+        display={showEditPassword}
+        hideDialog={() => setShowEditPassword(false)}
+        editPassword={handleEditPassword}
+        setMessage={setMessage}
         setErrorMessage={setErrorMessage}
       />
 

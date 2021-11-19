@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { NewUser, User } from '../types';
+import { NewPasswordUser, NewUser, User } from '../types';
 
 const baseUrl = '/api/users';
 
@@ -8,9 +8,14 @@ const create = async (newUser: NewUser) => {
   return response.data;
 };
 
+const changePassword = async (newPasswordUser: NewPasswordUser) => {
+  const response = await axios.put(`${baseUrl}/password`, newPasswordUser);
+  return response.data;
+};
+
 const isVerified = async (email: string) => {
   const response = await axios.get<{ verified: boolean }>(`${baseUrl}/${email}/is-verified/`);
   return response.data.verified;
 };
 
-export default { create, isVerified };
+export default { create, changePassword, isVerified };

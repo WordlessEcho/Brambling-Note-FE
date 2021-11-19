@@ -7,6 +7,7 @@ type Props = {
   displayName: string | null,
   showLogin: () => void,
   showRegister: () => void,
+  showEditPassword: () => void,
   handleLogout: () => void,
 };
 
@@ -15,7 +16,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const ApplicationBar = ({
-  displayName, showLogin, showRegister, handleLogout,
+  displayName, showLogin, showRegister, showEditPassword, handleLogout,
 }: Props) => {
   const classes = useStyles();
   const trigger = useScrollTrigger({
@@ -32,12 +33,17 @@ const ApplicationBar = ({
           </Typography>
           {displayName === null
             ? (
-              <div>
+              <>
                 <Button color="inherit" onClick={showRegister}>注册</Button>
                 <Button color="inherit" onClick={showLogin}>登入</Button>
-              </div>
+              </>
             )
-            : <Button color="inherit" onClick={handleLogout}>{displayName}</Button>}
+            : (
+              <>
+                <Button color="inherit" onClick={showEditPassword}>修改密码</Button>
+                <Button color="inherit" onClick={handleLogout}>{displayName}</Button>
+              </>
+            )}
         </Toolbar>
       </AppBar>
       <Toolbar />
