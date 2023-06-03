@@ -32,15 +32,15 @@ const NoteCell = ({
   return (
     <React.Fragment>
       {/* See: https://material-ui.com/components/tables/#collapsible-table */}
-      {/* TODO: Fix this style */}
+      {/* TODO: find out why it does not apply */}
       <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
-        <TableCell>
+        <TableCell sx={{ borderBottom: 'unset' }}>
           {content}
         </TableCell>
-        <TableCell align="right">
+        <TableCell align="right" sx={{ borderBottom: 'unset' }}>
           {new Date(date).toLocaleString()}
         </TableCell>
-        <TableCell align="right">
+        <TableCell align="right" sx={{ borderBottom: 'unset' }}>
           <IconButton
             size="small"
             aria-label="重要标记"
@@ -52,7 +52,7 @@ const NoteCell = ({
               : <Flag />}
           </IconButton>
         </TableCell>
-        <TableCell align="right">
+        <TableCell align="right" sx={{ borderBottom: 'unset' }}>
           <IconButton
             aria-label="展开此行"
             aria-checked={showDetails}
