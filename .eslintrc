@@ -5,7 +5,7 @@
     "jest": true
   },
   "extends": ["airbnb-typescript"],
-  "plugins": ["react", "@typescript-eslint"],
+  "plugins": ["import", "react", "@typescript-eslint"],
   "settings": {
     "react": {
       "pragma": "React",
