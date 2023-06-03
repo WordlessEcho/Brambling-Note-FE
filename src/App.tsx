@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import {
-  Container, ThemeProvider, Theme, createStyles, makeStyles, createTheme,
-} from '@material-ui/core';
-import { zhCN } from '@material-ui/core/locale';
+  Container, ThemeProvider, createTheme, Box,
+} from '@mui/material';
+import { pink, indigo } from '@mui/material/colors';
+import { zhCN } from '@mui/material/locale';
 
 import {
   ErrorMessage, LoginUser, NewNote, NewPassword, NewUser, Note, SnackbarMessage, User,
@@ -25,6 +26,13 @@ import NotificationSnackbar from './components/NotificationSnackbar';
 import NewFab from './components/NewFab';
 
 const theme = createTheme({
+  palette: {
+    primary: {
+      main: indigo['500'],
+      dark: indigo['700'],
+    },
+    secondary: { main: pink.A200 },
+  },
   typography: {
     fontFamily: [
       'Noto Sans SC',
@@ -35,18 +43,10 @@ const theme = createTheme({
     ].join(','),
   },
 }, zhCN);
-const useStyles = makeStyles((t: Theme) => createStyles({
-  appBarSpacer: t.mixins.toolbar,
-  fabSpacer: {
-    height: t.spacing(11),
-  },
-}));
 
 const UNDO_TIMEOUT = 5000;
 
 const App = () => {
-  const classes = useStyles();
-
   const [user, setUser] = useState<User | null>(null);
   const [notes, setNotes] = useState<Note[]>([]);
   const [showLogin, setShowLogin] = useState(false);
@@ -220,25 +220,24 @@ const App = () => {
         setErrorMessage={setErrorMessage}
       />
 
-      <div className={classes.appBarSpacer} />
       <Container component="main">
-        {notes.length === 0
-          ? (
-            <>
-              {/* TODO: display a user guide */}
-              <div>点击右下角的按钮，开始记录您的第一条便签！</div>
-            </>
-          )
-          : (
-            <Notes
-              notes={notes}
-              updateNote={handleNoteUpdate}
-              deleteNote={handleNoteDelete}
-              setErrorMessage={setErrorMessage}
-            />
-          )}
-
-        <div className={classes.fabSpacer} />
+        <Box sx={{ my: 2 }}>
+          {notes.length === 0
+            ? (
+              <>
+                {/* TODO: display a user guide */}
+                <div>点击右下角的按钮，开始记录您的第一条便签！</div>
+              </>
+            )
+            : (
+              <Notes
+                notes={notes}
+                updateNote={handleNoteUpdate}
+                deleteNote={handleNoteDelete}
+                setErrorMessage={setErrorMessage}
+              />
+            )}
+        </Box>
       </Container>
 
       <NotificationSnackbar
@@ -251,7 +250,7 @@ const App = () => {
       {/* TODO: we might use router later */}
       {user === null
         ? null
-        : <NewFab message={message} showNoteForm={() => setShowNoteForm(true)} />}
+        : <NewFab showNoteForm={() => setShowNoteForm(true)} />}
     </ThemeProvider>
   );
 };

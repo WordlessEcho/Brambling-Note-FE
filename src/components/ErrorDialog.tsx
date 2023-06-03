@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
-  Button, DialogActions, DialogContentText, DialogContent, DialogTitle, Divider, Dialog, makeStyles,
-} from '@material-ui/core';
+  Button, DialogActions, DialogContentText, DialogContent, DialogTitle, Divider, Dialog,
+} from '@mui/material';
 
 import { ErrorMessage } from '../types';
 
@@ -10,19 +10,7 @@ type Props = {
   hideDialog: () => void,
 };
 
-const useStyles = makeStyles({
-  log: {
-    /* Select all when user click */
-    /* https://css-tricks.com/click-once-select-all-click-again-select-normally/ */
-    userSelect: 'all',
-    /* This property is about line break */
-    /* https://github.com/mui-org/material-ui/issues/9189#issuecomment-466814903 */
-    whiteSpace: 'pre-line',
-  },
-});
-
 const ErrorDialog = ({ message, hideDialog }: Props) => {
-  const classes = useStyles();
 
   const [topDivider, setTopDivider] = useState(false);
   const [bottomDivider, setBottomDivider] = useState(false);
@@ -69,7 +57,18 @@ const ErrorDialog = ({ message, hideDialog }: Props) => {
                   <DialogContentText>
                     单击下面的日志即可自动全选。请复制并反馈给开发者，或者刷新页面重试：
                   </DialogContentText>
-                  <DialogContentText className={classes.log}>{message.content}</DialogContentText>
+                  <DialogContentText
+                    sx={{
+                      /* Select all when user click */
+                      /* https://css-tricks.com/click-once-select-all-click-again-select-normally/ */
+                      userSelect: 'all',
+                      /* This property is about line break */
+                      /* https://github.com/mui-org/material-ui/issues/9189#issuecomment-466814903 */
+                      whiteSpace: 'pre-line',
+                    }}
+                  >
+                    {message.content}
+                  </DialogContentText>
                 </DialogContent>
               )
               : null}
@@ -78,7 +77,7 @@ const ErrorDialog = ({ message, hideDialog }: Props) => {
               {message.content !== null
                 ? (
                   <>
-                    <Button onClick={hideDialog} autoFocus>
+                    <Button color='inherit' onClick={hideDialog} autoFocus>
                       忽略
                     </Button>
                     { /* TODO: replace link to feedback page */ }

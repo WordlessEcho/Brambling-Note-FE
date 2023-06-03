@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
-import { CssBaseline } from '@material-ui/core';
+import { CssBaseline } from '@mui/material';
 import App from './App';
 
 const root = ReactDOM.createRoot(

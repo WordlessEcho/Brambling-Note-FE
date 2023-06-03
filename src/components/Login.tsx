@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import {
   useTheme, useMediaQuery, Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button,
-  createStyles, Theme, makeStyles,
-} from '@material-ui/core';
+} from '@mui/material';
 import { ErrorMessage, LoginUser } from '../types';
 import { toErrorMessage } from '../utils';
 
@@ -14,12 +13,6 @@ type Props = {
   setErrorMessage: (message: ErrorMessage) => void,
 };
 
-const useStyles = makeStyles(({ spacing }: Theme) => createStyles({
-  afterInput: {
-    marginTop: spacing(1),
-  },
-}));
-
 const Login = ({
   display, hideDialog, login, setErrorMessage,
 }: Props) => {
@@ -29,7 +22,6 @@ const Login = ({
 
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
-  const classes = useStyles();
 
   const handleExit = () => {
     setEmail('');
@@ -69,19 +61,22 @@ const Login = ({
       <form onSubmit={onSubmit}>
         <DialogContent>
           <TextField
-            color="primary"
             error={!!wrongPwdText}
             helperText={wrongPwdText}
+            color="primary"
+            variant="standard"
+            margin="dense"
             fullWidth
             label="邮箱"
             value={email}
             onChange={({ target }) => setEmail(target.value)}
           />
           <TextField
-            className={classes.afterInput}
             error={!!wrongPwdText}
             helperText={wrongPwdText}
             color="primary"
+            variant="standard"
+            margin="dense"
             fullWidth
             label="密码"
             type="password"
@@ -92,6 +87,7 @@ const Login = ({
         <DialogActions>
           {/* TODO: add forgot password button */}
           <Button
+            color='inherit'
             onClick={handleExit}
           >
             取消

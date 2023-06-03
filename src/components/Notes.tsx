@@ -5,7 +5,7 @@ import {
   TableHead, TableRow, TableCell,
   TableSortLabel, TableBody,
   SortDirection,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import { ErrorMessage, NewNote, Note } from '../types';
 

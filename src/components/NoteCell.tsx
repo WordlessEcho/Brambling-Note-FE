@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-import {
-  IconButton, TableCell, TableRow, makeStyles,
-} from '@material-ui/core';
-import Flag from '@material-ui/icons/Flag';
-import KeyboardArrowUp from '@material-ui/icons/KeyboardArrowUp';
-import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown';
+import { IconButton, TableCell, TableRow } from '@mui/material';
+import Flag from '@mui/icons-material/Flag';
+import KeyboardArrowUp from '@mui/icons-material/KeyboardArrowUp';
+import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
 
 import { NewNote, Note } from '../types';
 
@@ -17,22 +15,12 @@ type Props = {
   handleNoteError: (error: Error, operation: string) => void,
 };
 
-const useStyles = makeStyles(() => ({
-  // See: https://material-ui.com/components/tables/#collapsible-table
-  hideBoraderLine: {
-    '& > *': {
-      borderBottom: 'unset',
-    },
-  },
-}));
-
 const NoteCell = ({
   note, updateNote, deleteNote, handleNoteError,
 }: Props) => {
   const {
     id, content, important, date,
   } = note;
-  const classes = useStyles();
 
   const [showDetails, setShowDetails] = useState(false);
 
@@ -42,8 +30,10 @@ const NoteCell = ({
   };
 
   return (
-    <>
-      <TableRow className={classes.hideBoraderLine}>
+    <React.Fragment>
+      {/* See: https://material-ui.com/components/tables/#collapsible-table */}
+      {/* TODO: Fix this style */}
+      <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
         <TableCell>
           {content}
         </TableCell>
@@ -83,7 +73,7 @@ const NoteCell = ({
           handleNoteError={handleNoteError}
         />
       </TableRow>
-    </>
+    </React.Fragment>
   );
 };
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Button, Slide, Snackbar, SlideProps, SnackbarContent, createStyles, Theme, makeStyles,
-} from '@material-ui/core';
+  Button, Slide, Snackbar, SlideProps, SnackbarContent,
+} from '@mui/material';
 
 type Props = {
   message: string | null,
@@ -10,21 +10,6 @@ type Props = {
   hideSnackbar: (() => any),
 };
 type TransitionProps = Omit<SlideProps, 'direction'>;
-const useStyles = makeStyles((t: Theme) => createStyles({
-  snackbar: {
-    bottom: 0,
-    [t.breakpoints.down('xs')]: {
-      left: 0,
-      right: 0,
-    },
-  },
-  snackbarContent: {
-    borderRadius: 2,
-    [t.breakpoints.down('xs')]: {
-      borderRadius: 0,
-    },
-  },
-}));
 
 // https://material-ui.com/components/snackbars/#control-slide-direction
 // eslint-disable-next-line react/jsx-props-no-spreading
@@ -37,9 +22,8 @@ const NotificationSnackbar = ({
   // keep message in exit animation
   const [cachedMessage, setCacheMessage] = useState(message);
   const [cachedUndo, setCacheUndo] = useState<(() => void) | null>(null);
-  const classes = useStyles();
 
-  const action = (_e?: React.SyntheticEvent, reason?: string) => {
+  const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === 'clickaway') {
       return;
     }
@@ -78,14 +62,29 @@ const NotificationSnackbar = ({
   return (
     <Snackbar
       key={cachedMessage}
-      className={classes.snackbar}
+      sx={[
+        { bottom: 0 },
+        (theme) => ({
+          [theme.breakpoints.down('xs')]: {
+            borderRadius: 0,
+          },
+        }),
+      ]}
       open={message !== null}
-      onClose={action}
+      onClose={handleClose}
       autoHideDuration={timeout}
       TransitionComponent={getTransistion}
     >
       <SnackbarContent
-        className={classes.snackbarContent}
+        sx={[
+          { borderRadius: 2 },
+          (theme) => ({
+            [theme.breakpoints.down('xs')]: {
+              left: 0,
+              right: 0,
+            },
+          }),
+        ]}
         message={cachedMessage}
         action={cachedUndo ? (
           <Button

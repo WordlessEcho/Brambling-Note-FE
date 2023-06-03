@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import {
   Dialog, DialogTitle, DialogContent, TextField, FormControlLabel, DialogActions, Button, useTheme,
-  useMediaQuery, Switch, createStyles, Theme, makeStyles,
-} from '@material-ui/core';
+  useMediaQuery, Switch, Stack,
+} from '@mui/material';
 
 import { ErrorMessage, NewNote } from '../types';
 import { toErrorMessage } from '../utils';
@@ -13,18 +13,12 @@ type Props = {
   hideDialog: () => void,
   setErrorMessage: (errorMessage: ErrorMessage) => void,
 };
-const useStyles = makeStyles((t: Theme) => createStyles({
-  checkbox: {
-    paddingTop: t.spacing(1),
-  },
-}));
 
 const defaultNewNote = { content: '', important: false };
 
 const NoteForm = ({
   display, createNote, hideDialog, setErrorMessage,
 }: Props) => {
-  const classes = useStyles();
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -50,28 +44,33 @@ const NoteForm = ({
       <DialogTitle id="create-note-dialog-title">新建一条便签</DialogTitle>
       <form onSubmit={onSubmit}>
         <DialogContent>
-          <TextField
-            fullWidth
-            multiline
-            rows={6}
-            label="内容"
-            value={newNote.content}
-            onChange={({ target }) => setNewNote({ ...newNote, content: target.value })}
-          />
-          <FormControlLabel
-            className={classes.checkbox}
-            control={(
-              <Switch
-                checked={newNote.important}
-                onChange={() => setNewNote({ ...newNote, important: !newNote.important })}
-              />
-            )}
-            label="重要"
-            aria-checked={newNote.important}
-          />
+          <Stack spacing={2}>
+            <TextField
+              color="primary"
+              variant="standard"
+              margin="dense"
+              fullWidth
+              multiline
+              rows={6}
+              label="内容"
+              value={newNote.content}
+              onChange={({ target }) => setNewNote({ ...newNote, content: target.value })}
+            />
+            <FormControlLabel
+              control={(
+                <Switch
+                  checked={newNote.important}
+                  onChange={() => setNewNote({ ...newNote, important: !newNote.important })}
+                />
+              )}
+              label="重要"
+              aria-checked={newNote.important}
+            />
+          </Stack>
         </DialogContent>
         <DialogActions>
           <Button
+            color='inherit'
             onClick={hideDialog}
           >
             取消

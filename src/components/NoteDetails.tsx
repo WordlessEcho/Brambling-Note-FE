@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Button, Grid, TextField, Box, Collapse, TableCell, createStyles, Theme, makeStyles,
-} from '@material-ui/core';
-import Share from '@material-ui/icons/Share';
-import Delete from '@material-ui/icons/Delete';
-import Done from '@material-ui/icons/Done';
+  Button, TextField, Box, Collapse, TableCell, Stack,
+} from '@mui/material';
+import Share from '@mui/icons-material/Share';
+import Delete from '@mui/icons-material/Delete';
+import Done from '@mui/icons-material/Done';
 
 import { NewNote, Note } from '../types';
 
@@ -17,17 +17,10 @@ type Props = {
   handleNoteError: (error: Error, operation: string) => void,
 };
 
-const useStyles = makeStyles(({ spacing }: Theme) => createStyles({
-  buttons: {
-    marginTop: spacing(1),
-  },
-}));
-
 const NoteDetails = ({
   display, hideDetails, note, updateNote, deleteNote, handleNoteError,
 }: Props) => {
   const { id, content } = note;
-  const classes = useStyles();
 
   const [newContent, setNewContent] = useState(content);
 
@@ -68,6 +61,9 @@ const NoteDetails = ({
         <Box margin={1}>
           <form onSubmit={onSubmit}>
             <TextField
+              color="primary"
+              variant="standard"
+              margin="dense"
               fullWidth
               multiline
               rows={3}
@@ -75,14 +71,16 @@ const NoteDetails = ({
               value={newContent}
               onChange={({ target }) => setNewContent(target.value)}
             />
-            <Grid container direction="row" justifyContent="flex-end" className={classes.buttons}>
+            <Stack direction="row" spacing={2} sx={{ justifyContent: 'flex-end' }}>
               <Button
+                color='inherit'
                 onClick={share}
                 endIcon={<Share />}
               >
                 分享
               </Button>
               <Button
+                color='inherit'
                 onClick={() => deleteNote(id)}
                 endIcon={<Delete />}
               >
@@ -95,7 +93,7 @@ const NoteDetails = ({
               >
                 保存
               </Button>
-            </Grid>
+            </Stack>
           </form>
         </Box>
       </Collapse>
