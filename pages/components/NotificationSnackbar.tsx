@@ -15,10 +15,9 @@ type TransitionProps = Omit<SlideProps, 'direction'>;
 // eslint-disable-next-line react/jsx-props-no-spreading
 const getTransistion = (props: TransitionProps) => <Slide {...props} direction="up" />;
 
-const NotificationSnackbar = ({
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+export default function NotificationSnackbar({
   message, timeout, actionUndo, hideSnackbar,
-}: Props) => {
+}: Props) {
   // keep message in exit animation
   const [cachedMessage, setCacheMessage] = useState(message);
   const [cachedUndo, setCacheUndo] = useState<(() => void) | null>(null);
@@ -57,7 +56,7 @@ const NotificationSnackbar = ({
       // keep undo button in exit animation
       setTimeout(() => setCacheUndo(null), 1000);
     }
-  }, [actionUndo]);
+  }, [actionUndo, hideSnackbar]);
 
   return (
     <Snackbar
@@ -98,6 +97,4 @@ const NotificationSnackbar = ({
       />
     </Snackbar>
   );
-};
-
-export default NotificationSnackbar;
+}

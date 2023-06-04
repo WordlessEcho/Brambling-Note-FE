@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import {
-  useTheme, useMediaQuery, Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button, Stack,
+  useTheme, useMediaQuery, Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button,
+  Stack,
 } from '@mui/material';
 import { ErrorMessage, NewPassword, SnackbarMessage } from '../types';
 import { toErrorMessage } from '../utils';
@@ -14,9 +15,9 @@ type Props = {
   setErrorMessage: (message: ErrorMessage) => void,
 };
 
-const EditPassword = ({
+export default function EditPassword({
   display, hideDialog, editPassword, setSnackbar, setErrorMessage,
-}: Props) => {
+}: Props) {
   const [password, setPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -114,7 +115,7 @@ const EditPassword = ({
         </DialogContent>
         <DialogActions>
           <Button
-            color='inherit'
+            color="inherit"
             onClick={handleExit}
           >
             取消
@@ -129,6 +130,4 @@ const EditPassword = ({
       </form>
     </Dialog>
   );
-};
-
-export default EditPassword;
+}

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import {
-  useTheme, useMediaQuery, Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button, Stack,
+  useTheme, useMediaQuery, Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button,
+  Stack,
 } from '@mui/material';
 import {
   ErrorMessage, NewUser, SnackbarMessage, User,
@@ -18,9 +19,9 @@ type Props = {
   setErrorMessage: (message: ErrorMessage) => void,
 };
 
-const Register = ({
+export default function Register({
   display, hideDialog, register, getActivateState, resendEmail, setSnackbar, setErrorMessage,
-}: Props) => {
+}: Props) {
   const [email, setEmail] = useState('');
   const [userExisted, setUserExisted] = useState(false);
   const [userActivated, setUserActivated] = useState(false);
@@ -145,7 +146,7 @@ const Register = ({
         </DialogContent>
         <DialogActions>
           <Button
-            color='inherit'
+            color="inherit"
             onClick={handleExit}
           >
             取消
@@ -161,6 +162,4 @@ const Register = ({
       </form>
     </Dialog>
   );
-};
-
-export default Register;
+}

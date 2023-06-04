@@ -13,9 +13,9 @@ type Props = {
   setErrorMessage: (message: ErrorMessage) => void,
 };
 
-const Login = ({
+export default function Login({
   display, hideDialog, login, setErrorMessage,
-}: Props) => {
+}: Props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [wrongPwdText, setWrongPwdText] = useState<string | null>(null);
@@ -87,7 +87,7 @@ const Login = ({
         <DialogActions>
           {/* TODO: add forgot password button */}
           <Button
-            color='inherit'
+            color="inherit"
             onClick={handleExit}
           >
             取消
@@ -102,6 +102,4 @@ const Login = ({
       </form>
     </Dialog>
   );
-};
-
-export default Login;
+}

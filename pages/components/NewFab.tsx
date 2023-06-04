@@ -4,8 +4,7 @@ import Edit from '@mui/icons-material/Edit';
 
 type Props = { showNoteForm: () => void };
 
-const NewFab = ({ showNoteForm }: Props) => {
-
+export default function NewFab({ showNoteForm }: Props) {
   return (
     <Fab
       sx={{ position: 'absolute', bottom: 16, right: 16 }}
@@ -16,6 +15,4 @@ const NewFab = ({ showNoteForm }: Props) => {
       <Edit />
     </Fab>
   );
-};
-
-export default NewFab;
+}

@@ -10,8 +10,7 @@ type Props = {
   hideDialog: () => void,
 };
 
-const ErrorDialog = ({ message, hideDialog }: Props) => {
-
+export default function ErrorDialog({ message, hideDialog }: Props) {
   const [topDivider, setTopDivider] = useState(false);
   const [bottomDivider, setBottomDivider] = useState(false);
 
@@ -77,7 +76,7 @@ const ErrorDialog = ({ message, hideDialog }: Props) => {
               {message.content !== null
                 ? (
                   <>
-                    <Button color='inherit' onClick={hideDialog} autoFocus>
+                    <Button color="inherit" onClick={hideDialog} autoFocus>
                       忽略
                     </Button>
                     { /* TODO: replace link to feedback page */ }
@@ -98,6 +97,4 @@ const ErrorDialog = ({ message, hideDialog }: Props) => {
         )}
     </Dialog>
   );
-};
-
-export default ErrorDialog;
+}

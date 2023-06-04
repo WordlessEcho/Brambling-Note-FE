@@ -17,9 +17,9 @@ type Props = {
   handleNoteError: (error: Error, operation: string) => void,
 };
 
-const NoteDetails = ({
+export default function NoteDetails({
   display, hideDetails, note, updateNote, deleteNote, handleNoteError,
-}: Props) => {
+}: Props) {
   const { id, content } = note;
 
   const [newContent, setNewContent] = useState(content);
@@ -51,7 +51,7 @@ const NoteDetails = ({
     if (display === false) {
       setNewContent(content);
     }
-  }, [display]);
+  }, [content, display]);
 
   return (
     <TableCell aria-label="编辑便签" style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -73,14 +73,14 @@ const NoteDetails = ({
             />
             <Stack direction="row" spacing={2} sx={{ justifyContent: 'flex-end' }}>
               <Button
-                color='inherit'
+                color="inherit"
                 onClick={share}
                 endIcon={<Share />}
               >
                 分享
               </Button>
               <Button
-                color='inherit'
+                color="inherit"
                 onClick={() => deleteNote(id)}
                 endIcon={<Delete />}
               >
@@ -99,6 +99,4 @@ const NoteDetails = ({
       </Collapse>
     </TableCell>
   );
-};
-
-export default NoteDetails;
+}

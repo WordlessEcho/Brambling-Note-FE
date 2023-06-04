@@ -11,9 +11,9 @@ type Props = {
   handleLogout: () => void,
 };
 
-const ApplicationBar = ({
+export default function ApplicationBar({
   displayName, showLogin, showRegister, showEditPassword, handleLogout,
-}: Props) => {
+}: Props) {
   const trigger = useScrollTrigger({
     disableHysteresis: true,
     threshold: 0,
@@ -44,6 +44,4 @@ const ApplicationBar = ({
       <Toolbar />
     </>
   );
-};
-
-export default ApplicationBar;
+}

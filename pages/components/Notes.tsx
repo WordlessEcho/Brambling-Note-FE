@@ -25,9 +25,9 @@ const defaultHeads: HeadCell[] = [
   { id: 'important', name: '重要', direction: null },
 ];
 
-const Notes = ({
+export default function Notes({
   notes, updateNote, deleteNote, setErrorMessage,
-}: Props) => {
+}: Props) {
   const [sortedNotes, setSortedNotes] = useState(notes);
   const [headsCanBeSorted, setHeadsCanBeSorted] = useState<HeadCell[]>(defaultHeads);
 
@@ -129,6 +129,4 @@ const Notes = ({
       </Table>
     </TableContainer>
   );
-};
-
-export default Notes;
+}

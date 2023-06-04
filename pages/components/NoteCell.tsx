@@ -15,9 +15,9 @@ type Props = {
   handleNoteError: (error: Error, operation: string) => void,
 };
 
-const NoteCell = ({
+export default function NoteCell({
   note, updateNote, deleteNote, handleNoteError,
-}: Props) => {
+}: Props) {
   const {
     id, content, important, date,
   } = note;
@@ -30,7 +30,7 @@ const NoteCell = ({
   };
 
   return (
-    <React.Fragment>
+    <>
       {/* See: https://material-ui.com/components/tables/#collapsible-table */}
       {/* TODO: find out why it does not apply */}
       <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
@@ -73,8 +73,6 @@ const NoteCell = ({
           handleNoteError={handleNoteError}
         />
       </TableRow>
-    </React.Fragment>
+    </>
   );
-};
-
-export default NoteCell;
+}

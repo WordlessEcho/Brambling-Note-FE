@@ -47,7 +47,7 @@ const theme = createTheme({
 
 const UNDO_TIMEOUT = 5000;
 
-const Home = () => {
+export default function Home() {
   const [user, setUser] = useState<User | null>(null);
   const [notes, setNotes] = useState<Note[]>([]);
   const [showLogin, setShowLogin] = useState(false);
@@ -265,6 +265,4 @@ const Home = () => {
       </main>
     </>
   );
-};
-
-export default Home;
+}

@@ -16,9 +16,9 @@ type Props = {
 
 const defaultNewNote = { content: '', important: false };
 
-const NoteForm = ({
+export default function NoteForm({
   display, createNote, hideDialog, setErrorMessage,
-}: Props) => {
+}: Props) {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -70,7 +70,7 @@ const NoteForm = ({
         </DialogContent>
         <DialogActions>
           <Button
-            color='inherit'
+            color="inherit"
             onClick={hideDialog}
           >
             取消
@@ -85,6 +85,4 @@ const NoteForm = ({
       </form>
     </Dialog>
   );
-};
-
-export default NoteForm;
+}
