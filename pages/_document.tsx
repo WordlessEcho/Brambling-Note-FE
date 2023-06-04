@@ -5,7 +5,7 @@ import {
 
 export default function Document() {
   return (
-    <Html lang="cnm">
+    <Html lang="cmn">
       <Head />
       <body>
         <Main />
