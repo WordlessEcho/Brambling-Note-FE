@@ -51,7 +51,7 @@ const NotificationSnackbar = ({
       };
 
       // idk why I have to make it as arrow function, but it works
-      // see handleNoteDelete() in App.tsx
+      // see handleNoteDelete() in index.tsx
       setCacheUndo(() => withUndo);
     } else {
       // keep undo button in exit animation
