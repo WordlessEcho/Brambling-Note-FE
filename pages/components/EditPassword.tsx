@@ -36,7 +36,7 @@ export default function EditPassword({
 
   const onSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    // make error readble for inputing multiple times of wrong password
+    // make error readable for inputing multiple times of wrong password
     setWrongPwdText(null);
     if (newPassword !== confirmPassword) {
       setWrongPwdText('两次输入的密码不一致');
@@ -55,7 +55,7 @@ export default function EditPassword({
           }
         }
 
-        // TODO: use constract instand of hard code
+        // TODO: use constant instead of hard code
         if (error.message === 'User email is null') {
           return setErrorMessage({ title: '请重新登入后再试', content: null });
         }

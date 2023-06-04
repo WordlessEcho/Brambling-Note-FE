@@ -32,7 +32,7 @@ export default function Login({
 
   const onSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    // make error readble for inputing multiple times of wrong password
+    // make error readable for inputing multiple times of wrong password
     setWrongPwdText(null);
 
     login({ email, password })

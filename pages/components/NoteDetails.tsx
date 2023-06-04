@@ -36,19 +36,17 @@ export default function NoteDetails({
     }
   };
 
-  const share = () => {
-    navigator.share({
-      // TODO: should not hard code app name
-      title: '便签',
-      text: content,
-      // TODO: Heroku will meet router problem
-      // Details: https://stackoverflow.com/questions/41772411/react-routing-works-in-local-machine-but-not-heroku
-      // url: `/${id}`,
-    });
-  };
+  const share = () => navigator.share({
+    // TODO: should not hard code app name
+    title: '便签',
+    text: content,
+    // TODO: Heroku will meet router problem
+    // Details: https://stackoverflow.com/questions/41772411/react-routing-works-in-local-machine-but-not-heroku
+    // url: `/${id}`,
+  });
 
   useEffect(() => {
-    if (display === false) {
+    if (!display) {
       setNewContent(content);
     }
   }, [content, display]);

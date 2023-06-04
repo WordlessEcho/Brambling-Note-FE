@@ -85,7 +85,7 @@ export default function Home() {
 
   const handleEditPassword = async (newPassword: NewPassword) => {
     if (!(user && user.email)) {
-      // TODO: use constract instand of hard code
+      // TODO: use constant instead of hard code
       throw new Error('User email is null');
     }
 
@@ -149,7 +149,7 @@ export default function Home() {
 
       setSnackbar(
         `便签「${note.content}」已被删除`,
-        // idk why I have to make it as arrow function, but it works
+        // I don't know why I have to make it as arrow function, but it works
         // see setCacheUndo() in components/NotificationSnackbar.tsx
         () => undoNoteRemove,
       );

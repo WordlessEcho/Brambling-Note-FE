@@ -13,7 +13,7 @@ type TransitionProps = Omit<SlideProps, 'direction'>;
 
 // https://material-ui.com/components/snackbars/#control-slide-direction
 // eslint-disable-next-line react/jsx-props-no-spreading
-const getTransistion = (props: TransitionProps) => <Slide {...props} direction="up" />;
+const getTransition = (props: TransitionProps) => <Slide {...props} direction="up" />;
 
 export default function NotificationSnackbar({
   message, timeout, actionUndo, hideSnackbar,
@@ -49,7 +49,7 @@ export default function NotificationSnackbar({
         }
       };
 
-      // idk why I have to make it as arrow function, but it works
+      // I don't know why I have to make it as arrow function, but it works
       // see handleNoteDelete() in index.tsx
       setCacheUndo(() => withUndo);
     } else {
@@ -72,7 +72,7 @@ export default function NotificationSnackbar({
       open={message !== null}
       onClose={handleClose}
       autoHideDuration={timeout}
-      TransitionComponent={getTransistion}
+      TransitionComponent={getTransition}
     >
       <SnackbarContent
         sx={[

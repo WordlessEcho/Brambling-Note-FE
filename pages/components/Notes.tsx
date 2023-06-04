@@ -56,33 +56,62 @@ export default function Notes({
     if (condition === null || condition === undefined) {
       setSortedNotes(notes);
     } else {
-      const emptyArray: Note[] = [];
-
       switch (condition.id) {
         case 'date':
-          setSortedNotes(emptyArray.concat(notes).sort((a, b) => {
-            const aMs = new Date(a.date).getTime();
-            const bMs = new Date(b.date).getTime();
+          setSortedNotes(
+            ([] as Note[]).concat(notes).sort((a, b) => {
+              const aMs = new Date(a.date).getTime();
+              const bMs = new Date(b.date).getTime();
 
-            if (condition.direction === 'asc') {
-              return aMs - bMs;
-            }
+              if (condition.direction === 'asc') {
+                return aMs - bMs;
+              }
 
-            return bMs - aMs;
-          }));
+              return bMs - aMs;
+            }),
+
+            // This API is too new to use for Typescript
+            // https://github.com/microsoft/TypeScript/pull/51367
+            // notes.toSorted((a, b) => {
+            //   const aMs = new Date(a.date).getTime();
+            //   const bMs = new Date(b.date).getTime();
+            //
+            //   if (condition.direction === 'asc') {
+            //     return aMs - bMs;
+            //   }
+            //
+            //   return bMs - aMs;
+            // }),
+          );
           break;
         case 'important':
-          setSortedNotes(emptyArray.concat(notes).sort((a, b) => {
-            if (a.important === b.important) {
-              return 0;
-            }
+          setSortedNotes(
+            ([] as Note[]).concat(notes).sort((a, b) => {
+              if (a.important === b.important) {
+                return 0;
+              }
 
-            if (condition.direction === 'asc') {
-              return a.important ? 1 : -1;
-            }
+              if (condition.direction === 'asc') {
+                return a.important ? 1 : -1;
+              }
 
-            return a.important ? -1 : 1;
-          }));
+              return a.important ? -1 : 1;
+            }),
+
+            // This API is too new to use for Typescript
+            // https://github.com/microsoft/TypeScript/pull/51367
+            // notes.toSorted((a, b) => {
+            //   if (a.important === b.important) {
+            //     return 0;
+            //   }
+            //
+            //   if (condition.direction === 'asc') {
+            //     return a.important ? 1 : -1;
+            //   }
+            //
+            //   return a.important ? -1 : 1;
+            // }),
+          );
           break;
         default:
           setSortedNotes(notes);
