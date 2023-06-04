@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Button, Grid, TextField, Box, Collapse, TableCell, createStyles, Theme, makeStyles,
-} from '@material-ui/core';
-import Share from '@material-ui/icons/Share';
-import Delete from '@material-ui/icons/Delete';
-import Done from '@material-ui/icons/Done';
+  Button, TextField, Box, Collapse, TableCell, Stack,
+} from '@mui/material';
+import Share from '@mui/icons-material/Share';
+import Delete from '@mui/icons-material/Delete';
+import Done from '@mui/icons-material/Done';
 
 import { NewNote, Note } from '../types';
 
@@ -17,17 +17,10 @@ type Props = {
   handleNoteError: (error: Error, operation: string) => void,
 };
 
-const useStyles = makeStyles(({ spacing }: Theme) => createStyles({
-  buttons: {
-    marginTop: spacing(1),
-  },
-}));
-
-const NoteDetails = ({
+export default function NoteDetails({
   display, hideDetails, note, updateNote, deleteNote, handleNoteError,
-}: Props) => {
+}: Props) {
   const { id, content } = note;
-  const classes = useStyles();
 
   const [newContent, setNewContent] = useState(content);
 
@@ -43,22 +36,20 @@ const NoteDetails = ({
     }
   };
 
-  const share = () => {
-    navigator.share({
-      // TODO: should not hard code app name
-      title: '便签',
-      text: content,
-      // TODO: Heroku will meet router problem
-      // Details: https://stackoverflow.com/questions/41772411/react-routing-works-in-local-machine-but-not-heroku
-      // url: `/${id}`,
-    });
-  };
+  const share = () => navigator.share({
+    // TODO: should not hard code app name
+    title: '便签',
+    text: content,
+    // TODO: Heroku will meet router problem
+    // Details: https://stackoverflow.com/questions/41772411/react-routing-works-in-local-machine-but-not-heroku
+    // url: `/${id}`,
+  });
 
   useEffect(() => {
-    if (display === false) {
+    if (!display) {
       setNewContent(content);
     }
-  }, [display]);
+  }, [content, display]);
 
   return (
     <TableCell aria-label="编辑便签" style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -68,6 +59,9 @@ const NoteDetails = ({
         <Box margin={1}>
           <form onSubmit={onSubmit}>
             <TextField
+              color="primary"
+              variant="standard"
+              margin="dense"
               fullWidth
               multiline
               rows={3}
@@ -75,14 +69,16 @@ const NoteDetails = ({
               value={newContent}
               onChange={({ target }) => setNewContent(target.value)}
             />
-            <Grid container direction="row" justifyContent="flex-end" className={classes.buttons}>
+            <Stack direction="row" spacing={2} sx={{ justifyContent: 'flex-end' }}>
               <Button
+                color="inherit"
                 onClick={share}
                 endIcon={<Share />}
               >
                 分享
               </Button>
               <Button
+                color="inherit"
                 onClick={() => deleteNote(id)}
                 endIcon={<Delete />}
               >
@@ -95,12 +91,10 @@ const NoteDetails = ({
               >
                 保存
               </Button>
-            </Grid>
+            </Stack>
           </form>
         </Box>
       </Collapse>
     </TableCell>
   );
-};
-
-export default NoteDetails;
+}

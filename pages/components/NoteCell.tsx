@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-import {
-  IconButton, TableCell, TableRow, makeStyles,
-} from '@material-ui/core';
-import Flag from '@material-ui/icons/Flag';
-import KeyboardArrowUp from '@material-ui/icons/KeyboardArrowUp';
-import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown';
+import { IconButton, TableCell, TableRow } from '@mui/material';
+import Flag from '@mui/icons-material/Flag';
+import KeyboardArrowUp from '@mui/icons-material/KeyboardArrowUp';
+import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
 
 import { NewNote, Note } from '../types';
 
@@ -17,22 +15,12 @@ type Props = {
   handleNoteError: (error: Error, operation: string) => void,
 };
 
-const useStyles = makeStyles(() => ({
-  // See: https://material-ui.com/components/tables/#collapsible-table
-  hideBoraderLine: {
-    '& > *': {
-      borderBottom: 'unset',
-    },
-  },
-}));
-
-const NoteCell = ({
+export default function NoteCell({
   note, updateNote, deleteNote, handleNoteError,
-}: Props) => {
+}: Props) {
   const {
     id, content, important, date,
   } = note;
-  const classes = useStyles();
 
   const [showDetails, setShowDetails] = useState(false);
 
@@ -43,14 +31,16 @@ const NoteCell = ({
 
   return (
     <>
-      <TableRow className={classes.hideBoraderLine}>
-        <TableCell>
+      {/* See: https://material-ui.com/components/tables/#collapsible-table */}
+      {/* TODO: find out why it does not apply */}
+      <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
+        <TableCell sx={{ borderBottom: 'unset' }}>
           {content}
         </TableCell>
-        <TableCell align="right">
+        <TableCell align="right" sx={{ borderBottom: 'unset' }}>
           {new Date(date).toLocaleString()}
         </TableCell>
-        <TableCell align="right">
+        <TableCell align="right" sx={{ borderBottom: 'unset' }}>
           <IconButton
             size="small"
             aria-label="重要标记"
@@ -62,7 +52,7 @@ const NoteCell = ({
               : <Flag />}
           </IconButton>
         </TableCell>
-        <TableCell align="right">
+        <TableCell align="right" sx={{ borderBottom: 'unset' }}>
           <IconButton
             aria-label="展开此行"
             aria-checked={showDetails}
@@ -85,6 +75,4 @@ const NoteCell = ({
       </TableRow>
     </>
   );
-};
-
-export default NoteCell;
+}

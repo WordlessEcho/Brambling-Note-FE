@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import {
-  Container, ThemeProvider, Theme, createStyles, makeStyles, createTheme,
-} from '@material-ui/core';
-import { zhCN } from '@material-ui/core/locale';
+  Container, ThemeProvider, createTheme, Box, CssBaseline,
+} from '@mui/material';
+import { pink, indigo } from '@mui/material/colors';
+import { zhCN } from '@mui/material/locale';
 
+import Head from 'next/head';
 import {
   ErrorMessage, LoginUser, NewNote, NewPassword, NewUser, Note, SnackbarMessage, User,
 } from './types';
@@ -25,6 +27,13 @@ import NotificationSnackbar from './components/NotificationSnackbar';
 import NewFab from './components/NewFab';
 
 const theme = createTheme({
+  palette: {
+    primary: {
+      main: indigo['500'],
+      dark: indigo['700'],
+    },
+    secondary: { main: pink.A200 },
+  },
   typography: {
     fontFamily: [
       'Noto Sans SC',
@@ -35,18 +44,10 @@ const theme = createTheme({
     ].join(','),
   },
 }, zhCN);
-const useStyles = makeStyles((t: Theme) => createStyles({
-  appBarSpacer: t.mixins.toolbar,
-  fabSpacer: {
-    height: t.spacing(11),
-  },
-}));
 
 const UNDO_TIMEOUT = 5000;
 
-const App = () => {
-  const classes = useStyles();
-
+export default function Home() {
   const [user, setUser] = useState<User | null>(null);
   const [notes, setNotes] = useState<Note[]>([]);
   const [showLogin, setShowLogin] = useState(false);
@@ -84,7 +85,7 @@ const App = () => {
 
   const handleEditPassword = async (newPassword: NewPassword) => {
     if (!(user && user.email)) {
-      // TODO: use constract instand of hard code
+      // TODO: use constant instead of hard code
       throw new Error('User email is null');
     }
 
@@ -148,7 +149,7 @@ const App = () => {
 
       setSnackbar(
         `便签「${note.content}」已被删除`,
-        // idk why I have to make it as arrow function, but it works
+        // I don't know why I have to make it as arrow function, but it works
         // see setCacheUndo() in components/NotificationSnackbar.tsx
         () => undoNoteRemove,
       );
@@ -173,87 +174,95 @@ const App = () => {
   }, [user]);
 
   return (
-    <ThemeProvider theme={theme}>
-      <ApplicationBar
-        handleLogout={handleLogout}
-        displayName={user === null ? null : user.name}
-        showLogin={() => setShowLogin(true)}
-        showEditPassword={() => setShowEditPassword(true)}
-        showRegister={() => setShowRegister(true)}
-      />
+    <>
+      <Head>
+        <title>燕雀便签</title>
+        <meta name="description" content="一个简单的便签应用" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <main>
+        <CssBaseline />
+        <ThemeProvider theme={theme}>
+          <ApplicationBar
+            handleLogout={handleLogout}
+            displayName={user === null ? null : user.name}
+            showLogin={() => setShowLogin(true)}
+            showEditPassword={() => setShowEditPassword(true)}
+            showRegister={() => setShowRegister(true)}
+          />
 
-      <Login
-        display={showLogin}
-        hideDialog={() => setShowLogin(false)}
-        login={handleLogin}
-        setErrorMessage={setErrorMessage}
-      />
+          <Login
+            display={showLogin}
+            hideDialog={() => setShowLogin(false)}
+            login={handleLogin}
+            setErrorMessage={setErrorMessage}
+          />
 
-      <EditPassword
-        display={showEditPassword}
-        hideDialog={() => setShowEditPassword(false)}
-        editPassword={handleEditPassword}
-        setSnackbar={setSnackbar}
-        setErrorMessage={setErrorMessage}
-      />
+          <EditPassword
+            display={showEditPassword}
+            hideDialog={() => setShowEditPassword(false)}
+            editPassword={handleEditPassword}
+            setSnackbar={setSnackbar}
+            setErrorMessage={setErrorMessage}
+          />
 
-      <Register
-        display={showRegister}
-        hideDialog={() => setShowRegister(false)}
-        register={handleRegister}
-        getActivateState={getActivateState}
-        resendEmail={resendVerifyEmail}
-        setSnackbar={setSnackbar}
-        setErrorMessage={setErrorMessage}
-      />
+          <Register
+            display={showRegister}
+            hideDialog={() => setShowRegister(false)}
+            register={handleRegister}
+            getActivateState={getActivateState}
+            resendEmail={resendVerifyEmail}
+            setSnackbar={setSnackbar}
+            setErrorMessage={setErrorMessage}
+          />
 
-      {/* TODO: abstract to show more type of message */}
-      <ErrorDialog
-        message={errorMessage}
-        hideDialog={() => setErrorMessage(null)}
-      />
+          {/* TODO: abstract to show more type of message */}
+          <ErrorDialog
+            message={errorMessage}
+            hideDialog={() => setErrorMessage(null)}
+          />
 
-      <NoteForm
-        display={showNoteForm}
-        createNote={handleNoteCreate}
-        hideDialog={() => setShowNoteForm(false)}
-        setErrorMessage={setErrorMessage}
-      />
+          <NoteForm
+            display={showNoteForm}
+            createNote={handleNoteCreate}
+            hideDialog={() => setShowNoteForm(false)}
+            setErrorMessage={setErrorMessage}
+          />
 
-      <div className={classes.appBarSpacer} />
-      <Container component="main">
-        {notes.length === 0
-          ? (
-            <>
-              {/* TODO: display a user guide */}
-              <div>点击右下角的按钮，开始记录您的第一条便签！</div>
-            </>
-          )
-          : (
-            <Notes
-              notes={notes}
-              updateNote={handleNoteUpdate}
-              deleteNote={handleNoteDelete}
-              setErrorMessage={setErrorMessage}
-            />
-          )}
+          <Container component="main">
+            <Box sx={{ my: 2 }}>
+              {notes.length === 0
+                ? (
+                  <>
+                    {/* TODO: display a user guide */}
+                    <div>点击右下角的按钮，开始记录您的第一条便签！</div>
+                  </>
+                )
+                : (
+                  <Notes
+                    notes={notes}
+                    updateNote={handleNoteUpdate}
+                    deleteNote={handleNoteDelete}
+                    setErrorMessage={setErrorMessage}
+                  />
+                )}
+            </Box>
+          </Container>
 
-        <div className={classes.fabSpacer} />
-      </Container>
+          <NotificationSnackbar
+            message={message}
+            timeout={UNDO_TIMEOUT}
+            actionUndo={snackbarActionUndo}
+            hideSnackbar={hideSnackbar}
+          />
 
-      <NotificationSnackbar
-        message={message}
-        timeout={UNDO_TIMEOUT}
-        actionUndo={snackbarActionUndo}
-        hideSnackbar={hideSnackbar}
-      />
-
-      {/* TODO: we might use router later */}
-      {user === null
-        ? null
-        : <NewFab message={message} showNoteForm={() => setShowNoteForm(true)} />}
-    </ThemeProvider>
+          {/* TODO: we might use router later */}
+          {user === null
+            ? null
+            : <NewFab showNoteForm={() => setShowNoteForm(true)} />}
+        </ThemeProvider>
+      </main>
+    </>
   );
-};
-
-export default App;
+}

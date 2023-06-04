@@ -24,17 +24,13 @@ type Fields = { id: unknown, email: unknown, name: unknown, token: unknown, veri
 
 export const toUser = ({
   id, email, name, token, verified,
-}: Fields): User => {
-  const user: User = {
-    id: parseString('id', id),
-    email: parseString('email', email),
-    name: parseString('name', name),
-    token: parseString('token', token),
-    verified: parseBoolean(verified),
-  };
-
-  return user;
-};
+}: Fields): User => ({
+  id: parseString('id', id),
+  email: parseString('email', email),
+  name: parseString('name', name),
+  token: parseString('token', token),
+  verified: parseBoolean(verified),
+});
 
 export const toErrorMessage = (error: Error): ErrorMessage => (
   {

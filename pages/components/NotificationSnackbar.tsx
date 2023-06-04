@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Button, Slide, Snackbar, SlideProps, SnackbarContent, createStyles, Theme, makeStyles,
-} from '@material-ui/core';
+  Button, Slide, Snackbar, SlideProps, SnackbarContent,
+} from '@mui/material';
 
 type Props = {
   message: string | null,
@@ -10,36 +10,19 @@ type Props = {
   hideSnackbar: (() => any),
 };
 type TransitionProps = Omit<SlideProps, 'direction'>;
-const useStyles = makeStyles((t: Theme) => createStyles({
-  snackbar: {
-    bottom: 0,
-    [t.breakpoints.down('xs')]: {
-      left: 0,
-      right: 0,
-    },
-  },
-  snackbarContent: {
-    borderRadius: 2,
-    [t.breakpoints.down('xs')]: {
-      borderRadius: 0,
-    },
-  },
-}));
 
 // https://material-ui.com/components/snackbars/#control-slide-direction
 // eslint-disable-next-line react/jsx-props-no-spreading
-const getTransistion = (props: TransitionProps) => <Slide {...props} direction="up" />;
+const getTransition = (props: TransitionProps) => <Slide {...props} direction="up" />;
 
-const NotificationSnackbar = ({
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+export default function NotificationSnackbar({
   message, timeout, actionUndo, hideSnackbar,
-}: Props) => {
+}: Props) {
   // keep message in exit animation
   const [cachedMessage, setCacheMessage] = useState(message);
   const [cachedUndo, setCacheUndo] = useState<(() => void) | null>(null);
-  const classes = useStyles();
 
-  const action = (_e?: React.SyntheticEvent, reason?: string) => {
+  const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === 'clickaway') {
       return;
     }
@@ -66,26 +49,41 @@ const NotificationSnackbar = ({
         }
       };
 
-      // idk why I have to make it as arrow function, but it works
-      // see handleNoteDelete() in App.tsx
+      // I don't know why I have to make it as arrow function, but it works
+      // see handleNoteDelete() in index.tsx
       setCacheUndo(() => withUndo);
     } else {
       // keep undo button in exit animation
       setTimeout(() => setCacheUndo(null), 1000);
     }
-  }, [actionUndo]);
+  }, [actionUndo, hideSnackbar]);
 
   return (
     <Snackbar
       key={cachedMessage}
-      className={classes.snackbar}
+      sx={[
+        { bottom: 0 },
+        (theme) => ({
+          [theme.breakpoints.down('xs')]: {
+            borderRadius: 0,
+          },
+        }),
+      ]}
       open={message !== null}
-      onClose={action}
+      onClose={handleClose}
       autoHideDuration={timeout}
-      TransitionComponent={getTransistion}
+      TransitionComponent={getTransition}
     >
       <SnackbarContent
-        className={classes.snackbarContent}
+        sx={[
+          { borderRadius: 2 },
+          (theme) => ({
+            [theme.breakpoints.down('xs')]: {
+              left: 0,
+              right: 0,
+            },
+          }),
+        ]}
         message={cachedMessage}
         action={cachedUndo ? (
           <Button
@@ -99,6 +97,4 @@ const NotificationSnackbar = ({
       />
     </Snackbar>
   );
-};
-
-export default NotificationSnackbar;
+}

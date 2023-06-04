@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import {
   useTheme, useMediaQuery, Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button,
-  createStyles, Theme, makeStyles,
-} from '@material-ui/core';
+} from '@mui/material';
 import { ErrorMessage, LoginUser } from '../types';
 import { toErrorMessage } from '../utils';
 
@@ -14,22 +13,15 @@ type Props = {
   setErrorMessage: (message: ErrorMessage) => void,
 };
 
-const useStyles = makeStyles(({ spacing }: Theme) => createStyles({
-  afterInput: {
-    marginTop: spacing(1),
-  },
-}));
-
-const Login = ({
+export default function Login({
   display, hideDialog, login, setErrorMessage,
-}: Props) => {
+}: Props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [wrongPwdText, setWrongPwdText] = useState<string | null>(null);
 
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
-  const classes = useStyles();
 
   const handleExit = () => {
     setEmail('');
@@ -40,7 +32,7 @@ const Login = ({
 
   const onSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    // make error readble for inputing multiple times of wrong password
+    // make error readable for inputing multiple times of wrong password
     setWrongPwdText(null);
 
     login({ email, password })
@@ -69,19 +61,22 @@ const Login = ({
       <form onSubmit={onSubmit}>
         <DialogContent>
           <TextField
-            color="primary"
             error={!!wrongPwdText}
             helperText={wrongPwdText}
+            color="primary"
+            variant="standard"
+            margin="dense"
             fullWidth
             label="邮箱"
             value={email}
             onChange={({ target }) => setEmail(target.value)}
           />
           <TextField
-            className={classes.afterInput}
             error={!!wrongPwdText}
             helperText={wrongPwdText}
             color="primary"
+            variant="standard"
+            margin="dense"
             fullWidth
             label="密码"
             type="password"
@@ -92,6 +87,7 @@ const Login = ({
         <DialogActions>
           {/* TODO: add forgot password button */}
           <Button
+            color="inherit"
             onClick={handleExit}
           >
             取消
@@ -106,6 +102,4 @@ const Login = ({
       </form>
     </Dialog>
   );
-};
-
-export default Login;
+}

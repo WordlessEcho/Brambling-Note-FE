@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import {
   useTheme, useMediaQuery, Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button,
-  createStyles, Theme, makeStyles,
-} from '@material-ui/core';
+  Stack,
+} from '@mui/material';
 import { ErrorMessage, NewPassword, SnackbarMessage } from '../types';
 import { toErrorMessage } from '../utils';
 
@@ -15,15 +15,9 @@ type Props = {
   setErrorMessage: (message: ErrorMessage) => void,
 };
 
-const useStyles = makeStyles(({ spacing }: Theme) => createStyles({
-  afterInput: {
-    marginTop: spacing(1),
-  },
-}));
-
-const EditPassword = ({
+export default function EditPassword({
   display, hideDialog, editPassword, setSnackbar, setErrorMessage,
-}: Props) => {
+}: Props) {
   const [password, setPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -31,7 +25,6 @@ const EditPassword = ({
 
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
-  const classes = useStyles();
 
   const handleExit = () => {
     setPassword('');
@@ -43,7 +36,7 @@ const EditPassword = ({
 
   const onSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    // make error readble for inputing multiple times of wrong password
+    // make error readable for inputing multiple times of wrong password
     setWrongPwdText(null);
     if (newPassword !== confirmPassword) {
       setWrongPwdText('两次输入的密码不一致');
@@ -62,7 +55,7 @@ const EditPassword = ({
           }
         }
 
-        // TODO: use constract instand of hard code
+        // TODO: use constant instead of hard code
         if (error.message === 'User email is null') {
           return setErrorMessage({ title: '请重新登入后再试', content: null });
         }
@@ -83,39 +76,46 @@ const EditPassword = ({
       <DialogTitle id="login-dialog-title">登入</DialogTitle>
       <form onSubmit={onSubmit}>
         <DialogContent>
-          <TextField
-            color="primary"
-            fullWidth
-            label="旧密码"
-            type="password"
-            value={password}
-            onChange={({ target }) => setPassword(target.value)}
-          />
-          <TextField
-            className={classes.afterInput}
-            color="primary"
-            error={!!wrongPwdText}
-            helperText={wrongPwdText}
-            fullWidth
-            label="新密码"
-            type="password"
-            value={newPassword}
-            onChange={({ target }) => setNewPassword(target.value)}
-          />
-          <TextField
-            className={classes.afterInput}
-            color="primary"
-            error={!!wrongPwdText}
-            helperText={wrongPwdText}
-            fullWidth
-            label="再次输入新密码"
-            type="password"
-            value={confirmPassword}
-            onChange={({ target }) => setConfirmPassword(target.value)}
-          />
+          <Stack spacing={2}>
+            <TextField
+              color="primary"
+              variant="standard"
+              margin="dense"
+              fullWidth
+              label="旧密码"
+              type="password"
+              value={password}
+              onChange={({ target }) => setPassword(target.value)}
+            />
+            <TextField
+              color="primary"
+              variant="standard"
+              margin="dense"
+              error={!!wrongPwdText}
+              helperText={wrongPwdText}
+              fullWidth
+              label="新密码"
+              type="password"
+              value={newPassword}
+              onChange={({ target }) => setNewPassword(target.value)}
+            />
+            <TextField
+              color="primary"
+              variant="standard"
+              margin="dense"
+              error={!!wrongPwdText}
+              helperText={wrongPwdText}
+              fullWidth
+              label="再次输入新密码"
+              type="password"
+              value={confirmPassword}
+              onChange={({ target }) => setConfirmPassword(target.value)}
+            />
+          </Stack>
         </DialogContent>
         <DialogActions>
           <Button
+            color="inherit"
             onClick={handleExit}
           >
             取消
@@ -130,6 +130,4 @@ const EditPassword = ({
       </form>
     </Dialog>
   );
-};
-
-export default EditPassword;
+}

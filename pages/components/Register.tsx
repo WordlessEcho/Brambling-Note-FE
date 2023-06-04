@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import {
   useTheme, useMediaQuery, Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button,
-  createStyles, Theme, makeStyles,
-} from '@material-ui/core';
+  Stack,
+} from '@mui/material';
 import {
   ErrorMessage, NewUser, SnackbarMessage, User,
 } from '../types';
@@ -19,15 +19,9 @@ type Props = {
   setErrorMessage: (message: ErrorMessage) => void,
 };
 
-const useStyles = makeStyles(({ spacing }: Theme) => createStyles({
-  afterInput: {
-    marginTop: spacing(1),
-  },
-}));
-
-const Register = ({
+export default function Register({
   display, hideDialog, register, getActivateState, resendEmail, setSnackbar, setErrorMessage,
-}: Props) => {
+}: Props) {
   const [email, setEmail] = useState('');
   const [userExisted, setUserExisted] = useState(false);
   const [userActivated, setUserActivated] = useState(false);
@@ -36,7 +30,6 @@ const Register = ({
 
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
-  const classes = useStyles();
 
   const handleExit = () => {
     setEmail('');
@@ -101,53 +94,59 @@ const Register = ({
       <DialogTitle id="register-dialog-title">注册</DialogTitle>
       <form onSubmit={onSubmit}>
         <DialogContent>
-          <TextField
-            color="primary"
-            error={userExisted && userActivated}
-            helperText={userExisted && userActivated ? '用户已注册' : null}
-            fullWidth
-            label="邮箱"
-            type="email"
-            value={email}
-            onChange={({ target }) => setEmail(target.value)}
-            onBlur={onFocusOut}
-          />
-          {userExisted && !userActivated ? (
-            <Button
-              className={classes.afterInput}
-              color="secondary"
+          <Stack spacing={2}>
+            <TextField
+              color="primary"
+              variant="standard"
+              margin="dense"
+              error={userExisted && userActivated}
+              helperText={userExisted && userActivated ? '用户已注册' : null}
               fullWidth
-              variant="contained"
-              onClick={handleResend}
-            >
-              重新发送激活邮件
-            </Button>
-          ) : (
-            <>
-              <TextField
-                className={classes.afterInput}
-                color="primary"
+              label="邮箱"
+              type="email"
+              value={email}
+              onChange={({ target }) => setEmail(target.value)}
+              onBlur={onFocusOut}
+            />
+            {userExisted && !userActivated ? (
+              <Button
+                color="secondary"
                 fullWidth
-                disabled={userExisted && userActivated}
-                label="昵称"
-                value={name}
-                onChange={({ target }) => setName(target.value)}
-              />
-              <TextField
-                className={classes.afterInput}
-                color="primary"
-                fullWidth
-                disabled={userExisted && userActivated}
-                label="密码"
-                type="password"
-                value={password}
-                onChange={({ target }) => setPassword(target.value)}
-              />
-            </>
-          )}
+                variant="contained"
+                onClick={handleResend}
+              >
+                重新发送激活邮件
+              </Button>
+            ) : (
+              <>
+                <TextField
+                  color="primary"
+                  variant="standard"
+                  margin="dense"
+                  fullWidth
+                  disabled={userExisted && userActivated}
+                  label="昵称"
+                  value={name}
+                  onChange={({ target }) => setName(target.value)}
+                />
+                <TextField
+                  color="primary"
+                  variant="standard"
+                  margin="dense"
+                  fullWidth
+                  disabled={userExisted && userActivated}
+                  label="密码"
+                  type="password"
+                  value={password}
+                  onChange={({ target }) => setPassword(target.value)}
+                />
+              </>
+            )}
+          </Stack>
         </DialogContent>
         <DialogActions>
           <Button
+            color="inherit"
             onClick={handleExit}
           >
             取消
@@ -163,6 +162,4 @@ const Register = ({
       </form>
     </Dialog>
   );
-};
-
-export default Register;
+}

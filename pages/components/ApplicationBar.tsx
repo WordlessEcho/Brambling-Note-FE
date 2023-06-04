@@ -1,7 +1,7 @@
 import React from 'react';
 import {
-  Button, Typography, Toolbar, AppBar, useScrollTrigger, makeStyles,
-} from '@material-ui/core';
+  Button, Typography, Toolbar, AppBar, useScrollTrigger,
+} from '@mui/material';
 
 type Props = {
   displayName: string | null,
@@ -11,14 +11,9 @@ type Props = {
   handleLogout: () => void,
 };
 
-const useStyles = makeStyles(() => ({
-  title: { flexGrow: 1 },
-}));
-
-const ApplicationBar = ({
+export default function ApplicationBar({
   displayName, showLogin, showRegister, showEditPassword, handleLogout,
-}: Props) => {
-  const classes = useStyles();
+}: Props) {
   const trigger = useScrollTrigger({
     disableHysteresis: true,
     threshold: 0,
@@ -28,7 +23,7 @@ const ApplicationBar = ({
     <>
       <AppBar elevation={trigger ? 4 : 0}>
         <Toolbar>
-          <Typography variant="h6" className={classes.title}>
+          <Typography variant="h6" sx={{ flexGrow: 1 }}>
             燕雀便签
           </Typography>
           {displayName === null
@@ -49,6 +44,4 @@ const ApplicationBar = ({
       <Toolbar />
     </>
   );
-};
-
-export default ApplicationBar;
+}
